@@ -26,3 +26,5 @@ go to the app root
 >grunt build:dev
 >grunt build:dist
 >npm start
+
+#Author : Muthukumar
