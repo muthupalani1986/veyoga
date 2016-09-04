@@ -1,0 +1,148 @@
+
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">Form Elements</h1>
+</div>
+
+<div class="row wrapper-md" data-ng-controller="dashboard">
+    <div  data-ng-class="{'col-sm-6':commentPanel,'col-sm-12':!commentPanel}">
+      <div class="panel panel-default panel-min-height">        
+        <div class="panel-body task-panel-body">
+
+          <div class="row task-row">
+            <div class="col-sm-6">            
+              <button type="submit" class="btn btn-sm btn-info" data-ng-click="addTask()">Add Task</button>
+            </div>
+            <div class="col-sm-6 right-align">
+              <a href="#">View:Incompleted Task</a> 
+            </div>
+
+          </div>
+
+          <div class="row task-top-buffer">
+            <div class="col-sm-12">
+              <table class="task-table">
+              <tr class="current" data-ng-repeat="task in tasks track by $index">
+                <td class="td-reorder"><i class="glyphicon glyphicon-th"></i></td>
+                <td class="td-check"><i class="icon-check"></i></i></td>
+                <td>                           
+                  <input type="text" class="task-input-field" data-ng-model="task" name="taskname"  data-ng-keyup="viewTask(this,task)" data-ng-click="viewTask(this,task)"/>  
+
+                </td>
+                <td class="td-user"><i class="icon-user icon-with-dot-circle""></i></td>
+              </tr>
+
+            </table>
+            </div>
+          </div>
+
+ 
+
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-6" data-ng-show="commentPanel">
+      <div class="panel panel-default panel-min-height">        
+        <div class="panel-body">
+          <div class="row comments-panel-header">
+            <div class="col-xs-4" data-ng-class="{'unassigned':unassigned}" ng-controller="TypeaheadDemoCtrl">
+             <div  data-ng-click="listUser()">
+             <div class="row">
+               <div class="col-xs-4">
+                 <i class="icon-user icon-with-dot-circle"></i> 
+               </div>
+               <div class="col-xs-8">
+                <input type="text" ng-model="selected" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control no-border" placeholder="Search user..."></div>
+
+               </div>
+             </div>
+             
+            </div>  
+            <div class="col-xs-4">
+            
+              <i class="icon-calendar icon-with-dot-circle" ng-click="open($event)" data-ng-show="!dt"></i> <span> <span data-ng-show="!dt" ng-click="open($event)">Due Date</span></span>          
+            <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  ng-click="open($event)" data-ng-class="{'dueDateFieldShow':dt,'dueDateFieldHidden':!dt}"/>
+            
+            </div>
+            <div class="col-xs-4">
+
+            <i class="icon-paper-clip icon-with-line-circle"></i>
+            <i class="glyphicon glyphicon-remove comment-close-icon" data-ng-click="closeConversationPanel()"></i>             
+            </div>  
+          </div>
+          <div class="row comments-top-buffer">
+              <div class="col-sm-12">
+
+                <span class="comments-project-name">sms</span>
+              </div>
+
+            
+          </div>
+
+          <div class="row comments-top-buffer">
+              <div class="col-sm-12">                
+                <div class="row">
+                  <div class="col-xs-2 comment-icon-column">
+                    <i class="icon-check comment-icon-check"></i>
+                  </div>
+                  <div class="col-xs-10 column-comment">
+                    <div class="form-group">
+                    <textarea class="form-control comment-panel-txtarea" rows="3" data-ng-model="task" data-ng-keyup="syncToTaskPanel()"></textarea>
+                    </div>
+                    <div class="form-group">
+                    <textarea class="form-control comment-panel-txtarea-description" rows="5" placeholder="Description" data-ng-model="taskDesciption"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-sm-12"> 
+
+                <div class="row">
+                    <div class="col-xs-2 comment-icon-column">
+                    <a class="thumb-sm avatar thumb-sm-comment">
+                    <img src="img/a2.jpg" alt="...">
+                    </a>
+                    </div>
+                    <div class="col-xs-10 column-comment">
+
+
+                              <div class="comment-editor-box">
+                                <div ui-jq="wysiwyg" class="comment-editor">                          
+                              </div>  
+
+                              <div class="right-align"><button type="submit" class="btn btn-sm btn-info">Comment</button></div>
+
+                              </div>
+                    </div>
+                </div>
+              </div>
+          </div>
+
+           <div class="row followers-row top-buffer comments-top-buffer">
+              <div class="col-sm-12"> 
+              
+                <table class="table followers-table">
+                <tbody>
+                  <tr>
+                    <td>Followres</td>
+                    <td>
+                      <a class="thumb-sm avatar thumb-sm-comment">
+                    <img src="img/a2.jpg" alt="...">
+                    </a> 
+                    <span class="follower-plus"><i class="icon-plus"></i></span>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
