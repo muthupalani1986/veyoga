@@ -1,7 +1,9 @@
 <!-- list -->
+
+<div class="left-nav-menu">
 <ul class="nav">
   <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
-    <span translate="aside.nav.HEADER">Navigation</span>
+    <span translate="aside.nav.HEADER">Reports</span>
   </li>
   <li data-ng-repeat="snav in parentobj.sidenav track by $index">
     <a href class="auto">      
@@ -10,7 +12,7 @@
         <i class="fa fa-fw fa-angle-down text-active"></i>
       </span>
       <i class="glyphicon glyphicon-stats icon text-primary-dker"></i>
-      <span class="font-bold">{{snav.team.team_name}}</span>
+      <span class="font-normal">{{snav.team.team_name}}</span>
     </a>
     <ul class="nav nav-sub dk">
       <li class="nav-sub-header">
@@ -378,3 +380,5 @@
   </li>
 </ul>
 <!-- / list -->
+
+</div>
