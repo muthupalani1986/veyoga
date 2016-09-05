@@ -1038,7 +1038,7 @@ h2,
 .h2,
 h3,
 .h3 {
-  margin-top: 20px;
+  margin-top: 5px;
   margin-bottom: 10px;
 }
 h1 small,
@@ -3868,7 +3868,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar {
   position: relative;
-  min-height: 50px;
+  min-height: 40px;
   margin-bottom: 20px;
   border: 1px solid transparent;
 }
@@ -3903,7 +3903,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
   .navbar-collapse.collapse {
     display: block !important;
-    height: auto !important;
+    height: 40px !important;
     padding-bottom: 0;
     overflow: visible !important;
     visibility: visible !important;
@@ -4053,6 +4053,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-nav .open .dropdown-menu > li > a:hover,
   .navbar-nav .open .dropdown-menu > li > a:focus {
     background-image: none;
+
   }
 }
 @media (min-width: 768px) {
@@ -4064,8 +4065,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     float: left;
   }
   .navbar-nav > li > a {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 }
 .navbar-form {
@@ -4159,8 +4160,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-bottom-left-radius: 0;
 }
 .navbar-btn {
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 .navbar-btn.btn-sm {
   margin-top: 10px;
@@ -5090,7 +5091,7 @@ a.list-group-item-danger.active:focus {
   line-height: 1.3;
 }
 .panel {
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   background-color: #fff;
   border: 1px solid transparent;
   border-radius: 4px;

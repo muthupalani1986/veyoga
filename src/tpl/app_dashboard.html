@@ -1,6 +1,6 @@
 
 <div class="bg-light lter b-b wrapper-md">
-  <h1 class="m-n font-thin h3"><span data-ng-if="parentobj.projectID">{{parentobj.proDetails.pro_name}}</span> <span data-ng-if="!parentobj.projectID">My Tasks</span></h1>
+  <h1 class="m-n font-bold h3"><span data-ng-if="parentobj.projectID">{{parentobj.proDetails.pro_name}}</span> <span data-ng-if="!parentobj.projectID">My Tasks</span></h1>
 </div>
 
 <div class="row wrapper-md" data-ng-controller="dashboard">
@@ -31,10 +31,7 @@
 
               <tr class="current" data-ng-repeat="task in parentobj.tasks track by task.task_id" class="priority task-row new_tasks_group grid-row-selected in-assigned-to-me-new-task taskRow--willCollapse">
                <td class="td-reorder myHandle"><i class="glyphicon glyphicon-th"></i></td>
-                <td class="td-check" class="grid-cell grid_cell_boolean taskRowView-completionCell">
-                
-                
-                <div class="circularToggleButtonView  circularToggleButtonView--toggledOff taskCheckboxNodeView "><div class="circularButtonView circularToggleButtonView-button circularButtonView--xsmall circularButtonView--onWhiteBackground circularButtonView--active"><span class="circularButtonView-label"><svg class="svgIcon " viewBox="0 0 32 32" title="checkmark"><polygon points="27.672,4.786 10.901,21.557 4.328,14.984 1.5,17.812 10.901,27.214 30.5,7.615 "></polygon></svg></span></div></div></td>
+                <td class="td-check"><i class="icon-check"></i></td>
                 <td>                           
               
 
@@ -45,10 +42,11 @@
                </td>
                
                
-               <td class="grid-cell grid_cell_schedule" width="10px;"><a id="schedule_status_dropdown_SPECIAL_GROUP_NEW_161749887183961" tabindex="-1" class="dropdown-menu-link schedule-status-dropdown "><span class="schedule-status users_new_task" id="luna8">&nbsp;</span></a></td>
+            
                
                
-               <td class="grid-cell grid_cell_show_details" width="10px;"><div class="itemRowView-detailsButton has-comments has-metadata"><span class="itemRowView-detailsButton-seeMore"><svg class="svgIcon " viewBox="0 0 32 32" title="right"><polygon points="12.5,5 10,7.5 18.914,16.586 10,25.5 12.5,28 24,16.5"></polygon></svg></div></span></td>
+               <td class="td-user"><i class="icon-user icon-with-dot-circle""></i></td>
+
               </tr>
               </tbody>
             </table>
@@ -133,7 +131,8 @@
             </div>  
           </div>
           <div class="row">
-        <div class="col-md-12 task-conv-holder">
+        <div class="col-md-12 task-conv-holder">                              
+
           
           <div class="row comments-top-buffer">
               <div class="col-sm-12">
@@ -177,7 +176,9 @@
         </div>
         </div>  
 
-          <div class="row">
+      
+
+       <div class="row">
               <div class="col-sm-12"> 
 
                 <div class="row">
@@ -200,6 +201,9 @@
                 </div>
               </div>
           </div>
+
+
+
 
            <div class="row followers-row top-buffer comments-top-buffer">
               <div class="col-sm-12"> 
