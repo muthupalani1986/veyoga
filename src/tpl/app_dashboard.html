@@ -1,5 +1,4 @@
 
-
 <div class="bg-light lter b-b wrapper-md">
   <h1 class="m-n font-bold h3"><span data-ng-if="parentobj.projectID">{{parentobj.proDetails.pro_name}}</span> <span data-ng-if="!parentobj.projectID">My Tasks</span></h1>
 </div>
@@ -63,12 +62,12 @@
     </div>
     <div class="col-sm-6" data-ng-show="parentobj.commentPanel">
       <div class="panel panel-default task-holder-panel">        
-        <div class="panel-body">
+        <div class="panel-body comments-panel-body">
           <div class="row comments-panel-header">
           
             <div class="col-xs-4">
              <div>
-             <div class="row assignee-row" data-ng-class="{'assignee-row-visible':assigneeOrgusersBoxStatus,'assignee-row-hover':!assigneeOrgusersBoxStatus}" ng-Mouseover="showDelete=true" ng-mouseleave="showDelete=false">
+             <div class="row assignee-row" data-ng-class="{'assignee-row-visible':assigneeOrgusersBoxStatus,'assignee-row-hover':!assigneeOrgusersBoxStatus,'unassigned-row':!parentobj.selectedAssignee}" ng-Mouseover="showDelete=true" ng-mouseleave="showDelete=false">
                <div class="col-xs-3 assignee-col">
                         <span data-ng-show="!parentobj.selectedAssignee" data-ng-click="enableOrgUsersBox()"><i class="icon-user icon-with-dot-circle" ></i> </span>
                             <a class="thumb-sm avatar thumb-assignee" data-ng-show="parentobj.selectedAssignee" data-ng-click="enableOrgUsersBox()">
@@ -106,22 +105,38 @@
              </div>
              
             </div>  
-            <div class="col-xs-4">
+            <div class="col-xs-4">     
             
-              <i class="icon-calendar icon-with-dot-circle" ng-click="open($event)" data-ng-show="!dt"></i> <span> <span data-ng-show="!dt" ng-click="open($event)">Due Date</span></span>          
-            <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  ng-click="open($event)" data-ng-class="{'dueDateFieldShow':dt,'dueDateFieldHidden':!dt}"/>
+            <div class="row assignee-row unassigned-row" data-ng-class="{'assignee-row-visible':opened,'assignee-row-hover':!opened}" ng-Mouseover="showDueDateDelete=true" ng-mouseleave="showDueDateDelete=false">
+                    <div class="col-xs-3 assignee-col">    <i class="icon-calendar icon-with-dot-circle" ng-click="open($event)"></i> </div>
+                    <div class="col-xs-9 nopadding assignee-search-col dueDatePicker">
+                       <span class="delete-dueDate" data-ng-click="removeDueDate()" data-ng-show="showDueDateDelete && dueDate"><i class="glyphicon glyphicon-remove-circle"></i></span>
+                            <input type="text" class="form-control no-border" datepicker-popup="{{format}}" ng-model="dueDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  ng-click="open($event)" placeholder="Due Date" />
+
+                      
+
+                    </div>
+            </div>
+
+                   
+        
             
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-4 panel-header-icons-row">
+             <span class="sub-task"><i class="glyphicon glyphicon-tasks"></i></span>
+             <span class="attachment"><i class="glyphicon glyphicon-paperclip"></i></span>
 
-            <i class="icon-paper-clip icon-with-line-circle"></i>
-            <i class="glyphicon glyphicon-remove comment-close-icon" data-ng-click="closeConversationPanel()"></i>             
-            </div> 
-                    
-     <div class="col-md-12 task-conv-holder">
+            <i class="glyphicon glyphicon-remove comment-close-icon" data-ng-click="closeConversationPanel()"></i>
+
+            </div>  
+          </div>
+          <div class="row">
+        <div class="col-md-12 task-conv-holder">                              
+
           
           <div class="row comments-top-buffer">
               <div class="col-sm-12">
+
                 <span class="comments-project-name">{{task.pro_name}}</span>
                 <span data-ng-if="task.section_id!=null">{{task.section_name}}</span>
               </div>

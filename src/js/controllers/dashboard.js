@@ -1,7 +1,8 @@
 'use strict';
-app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce', function($scope, $http, $state, domain, $sce) {
+app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$filter', function($scope, $http, $state, domain, $sce,$filter) {
 
     $scope.currentTask;
+    var datefilter = $filter('date');
     $scope.addTask = function(isSection) {
         var is_section;
         var task_name;
@@ -45,12 +46,12 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce', func
                 }
             }
 
-            console.log(response.data.task[0]);
+            
 
             $scope.parentobj.tasks.splice(position, 0, response.data.task[0]);
 
             if (response.data.task[0].is_section) {
-                console.log("is section");
+                
                 for (var i = position; i < $scope.parentobj.tasks.length; i++) {
                     if ($scope.parentobj.tasks[i].is_section && i > position) {
                         break;
@@ -81,8 +82,15 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce', func
         var data = $.param({
             token: localStorage.getItem("token"),
             taskID: $scope.currentTask.task.task_id
-        });
-
+        });        
+         
+        if($scope.currentTask.task.due_on=="0000-00-00 00:00:00"){
+            $scope.dueDate="";
+        }
+        else
+        {
+            $scope.dueDate=$scope.currentTask.task.due_on;
+        }
 
         $http.post(domain + 'getConversations', data).then(function(response) {
             $scope.coversation = response.data.coversation;
@@ -133,12 +141,12 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce', func
     }
 
     $scope.today = function() {
-        //$scope.dt = new Date();
+        $scope.dueDate=datefilter($scope.dueDate, 'dd-MMMM-yyyy');
     };
-    $scope.today();
+    //$scope.today();
 
     $scope.clear = function() {
-        $scope.dt = null;
+        $scope.dueDate = null;
     };
 
     // Disable weekend selection
@@ -149,12 +157,13 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce', func
     $scope.toggleMin = function() {
         $scope.minDate = $scope.minDate ? null : new Date();
     };
-    $scope.toggleMin();
+    
 
     $scope.open = function($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened = true;
+        $scope.assigneeOrgusersBoxStatus=false;  
     };
 
     $scope.dateOptions = {
@@ -162,64 +171,9 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce', func
         startingDay: 1,
         class: 'datepicker'
     };
-
-    $scope.initDate = new Date('2016-15-20');
+    
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    $scope.format = $scope.formats[0];
-
-    $scope.person = {};
-    $scope.people = [{
-        name: 'Adam',
-        email: 'adam@email.com',
-        age: 12,
-        country: 'United States'
-    }, {
-        name: 'Amalie',
-        email: 'amalie@email.com',
-        age: 12,
-        country: 'Argentina'
-    }, {
-        name: 'Estefanía',
-        email: 'estefania@email.com',
-        age: 21,
-        country: 'Argentina'
-    }, {
-        name: 'Adrian',
-        email: 'adrian@email.com',
-        age: 21,
-        country: 'Ecuador'
-    }, {
-        name: 'Wladimir',
-        email: 'wladimir@email.com',
-        age: 30,
-        country: 'Ecuador'
-    }, {
-        name: 'Samantha',
-        email: 'samantha@email.com',
-        age: 30,
-        country: 'United States'
-    }, {
-        name: 'Nicole',
-        email: 'nicole@email.com',
-        age: 43,
-        country: 'Colombia'
-    }, {
-        name: 'Natasha',
-        email: 'natasha@email.com',
-        age: 54,
-        country: 'Ecuador'
-    }, {
-        name: 'Michael',
-        email: 'michael@email.com',
-        age: 15,
-        country: 'Colombia'
-    }, {
-        name: 'Nicolás',
-        email: 'nicolas@email.com',
-        age: 43,
-        country: 'Colombia'
-    }]; 
-
+    $scope.format = $scope.formats[0];    
 
     $scope.postConv = function() {
 
@@ -306,7 +260,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce', func
                 return true;
 
             });
-            console.log($scope.parentobj.tasks);
+            
 
             var data = $.param({
                 token: localStorage.getItem("token"),
@@ -348,7 +302,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce', func
                 var data=[$scope.data.followers[i],$scope.currentTask.task.task_id];
                 followerData.push(data);
             }
-            console.log(followerData);
+            
             var data = $.param({
                 token: localStorage.getItem("token"),
                 taskID: $scope.currentTask.task.task_id,                
@@ -462,6 +416,43 @@ $scope.unassignee=function(){
     });
 
 
+}
+
+$scope.$watch('dueDate', function(newValue, oldvalue) {
+    if(newValue!=oldvalue){          
+        var due_on=datefilter(newValue, 'yyyy-MM-dd HH:mm:ss');
+        if(typeof due_on=="undefined" || due_on=="" || due_on === null){
+           due_on="0000-00-00 00:00:00"; 
+           $scope.currentTask.task.due_on="";
+        }
+        else
+        {
+            var dueDate=$filter('filter')(due_on,'yyy-MM-dd');
+           var extractDate= dueDate.split(" ");
+           var splitDate=extractDate[0].split('-');
+           var validDueOn=splitDate[0]+"-"+splitDate[1]+"-"+splitDate[2];           
+            $scope.currentTask.task.due_on=validDueOn; 
+            
+        }
+        var data = $.param({
+            token: localStorage.getItem("token"),
+            taskID: $scope.currentTask.task.task_id,
+            due_on: due_on
+        });        
+            
+
+        $http.post(domain + 'updateDueDate', data).then(function(response) {
+            console.log("succ");
+        },function(){          
+      $state.go('access.signin', {});
+    });
+
+    }
+},true);
+
+$scope.removeDueDate=function(){
+$scope.currentTask.task.due_on="";
+$scope.dueDate="";
 }
 
 }]);
