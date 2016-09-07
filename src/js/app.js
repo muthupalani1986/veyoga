@@ -15,5 +15,7 @@ angular.module('app', [
     'oc.lazyLoad',
     'pascalprecht.translate',
     'ui.sortable',
-    'angular.chosen'
+    'angular.chosen',
+    'ngFileUpload',
+    'monospaced.elastic'
 ]);

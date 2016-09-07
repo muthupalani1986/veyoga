@@ -1,7 +1,8 @@
 'use strict';
-app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$filter', function($scope, $http, $state, domain, $sce,$filter) {
+app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$filter','Upload','$timeout', function($scope, $http, $state, domain, $sce,$filter,Upload, $timeout) {
 
     $scope.currentTask;
+    $scope.parentobj.token=localStorage.getItem("token");
     var datefilter = $filter('date');
     $scope.addTask = function(isSection) {
         var is_section;
@@ -454,5 +455,42 @@ $scope.removeDueDate=function(){
 $scope.currentTask.task.due_on="";
 $scope.dueDate="";
 }
+
+
+$scope.uploadFiles = function(files, errFiles) {
+        $scope.files = files;        
+        $scope.errFiles = errFiles;
+        $scope.isUploadInProgress=false;
+        angular.forEach(files, function(file) {
+            console.log("here");
+            file.upload = Upload.upload({
+                url: domain +'saveAttachment?token='+$scope.parentobj.token,
+                data: {taskID:$scope.currentTask.task.task_id,file: file}
+            });
+
+            file.upload.then(function (response) {
+                $timeout(function () {
+                    file.result = response.data;
+                    file.attach_id=response.data.attach_id;
+                    console.log(response.data.attach_id);
+                });
+            }, function (response) {
+                if (response.status > 0)
+                    $scope.errorMsg = response.status + ': ' + response.data;
+            }, function (evt) {
+                file.progress = Math.min(100, parseInt(100.0 * 
+                                         evt.loaded / evt.total));
+                console.log(file.progress);
+                if(file.progress!=100){
+                    $scope.isUploadInProgress=true;
+                }
+                else
+                {   
+                    $scope.isUploadInProgress=false;
+                }
+            });
+        });
+    }
+
 
 }]);

@@ -5245,7 +5245,7 @@ a.text-#000000:hover {
 {
   border-color:#fff;
   font-weight: bold;
-  font-size: 30px;  
+  font-size: 24px;  
 }
 
 .comment-panel-txtarea-description
@@ -6380,6 +6380,7 @@ a {
   transition: border-color .5s ease-in-out;
   -webkit-transition: border-color .5s ease-in-out;
   -moz-transition: border-color .5s ease-in-out;
+  position: relative;
   
 }
 .panel-header-icons-row
@@ -6529,3 +6530,48 @@ background-color: #2E3C54; box-sizing: content-box;
 
 }
 
+.progress {
+    display: inline-block;
+    width: 100px;
+    border: 3px groove #CCC;
+}
+
+.progress div {
+    font-size: smaller;
+    background: orange;
+    width: 0;
+}
+
+.hidden-browser-button
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.autogrow-textarea
+{
+  resize: none;
+}
+
+.attach
+{
+  padding: 10px 0 10px 0;
+  border-top:solid 1px #dee5e7;
+  border-bottom:solid 1px #dee5e7;
+}
+.progress-block
+{
+  height:20px;
+  margin-left:15px;
+}

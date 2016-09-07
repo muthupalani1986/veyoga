@@ -124,7 +124,11 @@
             </div>
             <div class="col-xs-4 panel-header-icons-row">
              <span class="sub-task"><i class="glyphicon glyphicon-tasks"></i></span>
-             <span class="attachment"><i class="glyphicon glyphicon-paperclip"></i></span>
+             
+      <span class="attachment"><i class="glyphicon glyphicon-paperclip"></i>
+      <button ngf-select="uploadFiles($files, $invalidFiles)" multiple class="hidden-browser-button" data-ng-disabled="isUploadInProgress"></button> 
+      </span>
+      
 
             <i class="glyphicon glyphicon-remove comment-close-icon" data-ng-click="closeConversationPanel()"></i>
 
@@ -152,15 +156,34 @@
                   </div>
                   <div class="col-xs-10 column-comment">
                     <div class="form-group">
-                    <textarea class="form-control comment-panel-txtarea" rows="3" data-ng-model="task.task_name" data-ng-keyup="syncToTaskPanel()" data-ng-blur="updateTaskName(task)"></textarea>
+                    <textarea class="msd-elastic form-control comment-panel-txtarea autogrow-textarea" data-ng-model="task.task_name" data-ng-keyup="syncToTaskPanel()" data-ng-blur="updateTaskName(task)" rows="1"></textarea>
                     </div>
                     <div class="form-group">
-                    <textarea class="form-control comment-panel-txtarea-description" rows="5" placeholder="Description" data-ng-model="task.task_description" data-ng-blur="updateTaskDescription(task)"></textarea>
+                    <textarea class="msd-elastic form-control comment-panel-txtarea-description autogrow-textarea" rows="1" placeholder="Description" data-ng-model="task.task_description" data-ng-blur="updateTaskDescription(task)"></textarea>
                     </div>
                   </div>
                 </div>
               </div>
           </div>
+                  
+              <div class="col-sm-12 attach" data-ng-hide="attachments.length==0 && !files">
+
+                  <div ng-repeat="attach in attachments">
+                    <i class="glyphicon glyphicon-paperclip"></i> <span><a href="javascript:void(0)">{{attach.original_name}}</a></span>
+                  </div>
+
+                  <div ng-repeat="f in files">
+                    <i class="glyphicon glyphicon-paperclip"></i> <span><a href="javascript:void(0)">{{f.name}}</a></span>
+                    <div data-ng-hide="f.progress==100">
+                      <span class="progress" ng-show="f.progress >= 0">
+                        <div style="width:{{f.progress}}%"  
+                            ng-bind="f.progress + '%'"></div>
+                      </span>
+                    </div>
+                  </div>
+
+              </div>
+              
 
         <div class="row thread-row" data-ng-repeat="conv in coversation track by $index">
               <div class="col-xs-2 thread-icon-column"> 
@@ -200,6 +223,7 @@
                     </div>
                 </div>
               </div>
+
           </div>
 
 
