@@ -907,7 +907,7 @@ body {
 }
 
 .navbar-brand img {
-   max-height: 34px;
+   max-height: 37px;
     vertical-align: middle;
     text-align: center;
     margin: auto;
@@ -917,12 +917,12 @@ body {
 @media (min-width: 768px) {
   .app-aside,
   .navbar-header {
-    width: 200px;
+    width: 220px;
   }
   .navbar-collapse,
   .app-content,
   .app-footer {
-    margin-left: 200px;
+    margin-left: 220px;
   }
   .app-aside-right {
     position: absolute;
@@ -3027,7 +3027,7 @@ fieldset[disabled] .i-checks input + i:before {
 
 .bg-black {
   color: #7793a7;
-  background-color: #1c2b36;
+  background-color: #2E3C54;
 }
 
 .bg-black.lt,
