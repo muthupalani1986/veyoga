@@ -99,7 +99,17 @@ angular.module('app')
 
 			var isValid=moment(due_on).isValid();			
 			if(isValid){
+			var currentDateISO=new Date().toISOString();
+			var currentYear = moment(currentDateISO).format("YYYY");
+			var dueOnYear=moment(due_on).format("YYYY");
+			if(dueOnYear==currentYear){
 				return moment(due_on).format('MMM DD');
+			}
+			else{
+				return moment(due_on).format('MMM DD, YYYY');
+			}
+			
+
 			}
 			else
 			{
