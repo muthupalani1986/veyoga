@@ -6575,3 +6575,9 @@ background-color: #2E3C54; box-sizing: content-box;
   height:20px;
   margin-left:15px;
 }
+.remove-icon
+{
+  font-size: 13px;
+  cursor: pointer;
+  color: #7D8182;
+}

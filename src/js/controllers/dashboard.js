@@ -2,6 +2,7 @@
 app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$filter','Upload','$timeout', function($scope, $http, $state, domain, $sce,$filter,Upload, $timeout) {
 
     $scope.currentTask;
+    $scope.serviceUrl=domain;
     $scope.parentobj.token=localStorage.getItem("token");
     var datefilter = $filter('date');
     $scope.addTask = function(isSection) {
@@ -92,7 +93,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
         {
             $scope.dueDate=$scope.currentTask.task.due_on;
         }
-
+        $scope.files="";
         $http.post(domain + 'getConversations', data).then(function(response) {
             $scope.coversation = response.data.coversation;
             $scope.attachments = response.data.attachments;
@@ -492,5 +493,48 @@ $scope.uploadFiles = function(files, errFiles) {
         });
     }
 
+$scope.removeAttach=function(attachment,removeFrom){
+    
+    if(removeFrom=='attachments'){
+        $scope.attachments=$.grep($scope.attachments,function(item,index){
+
+            if(item.attach_id==attachment.attach_id){
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        });
+    }
+
+    if(removeFrom=='files'){
+        $scope.files=$.grep($scope.files,function(item,index){
+
+            if(item.attach_id==attachment.attach_id){
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        });
+    }
+
+
+    var data = $.param({
+        token: localStorage.getItem("token"),
+        assert_id: attachment.attach_id
+    });        
+
+
+    $http.post(domain + 'deleteAssert', data).then(function(response) {
+    console.log("succ");
+    },function(){          
+   // $state.go('access.signin', {});
+    });
+
+
+}
 
 }]);

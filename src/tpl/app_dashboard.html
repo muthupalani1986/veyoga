@@ -76,7 +76,7 @@
                </div>
                <div class="col-xs-9 nopadding assignee-search-col">
                <div class="name-of-assignee"  data-ng-show="!assigneeOrgusersBoxStatus"><div data-ng-click="enableOrgUsersBox()">{{parentobj.selectedAssignee?parentobj.selectedAssignee.firstname:'Unassigned'}}</div>
-               <span class="delete-assignee" data-ng-show="showDelete && parentobj.selectedAssignee" data-ng-click="unassignee()"><i class="glyphicon glyphicon-remove-circle"></i></span>
+               <span class="delete-assignee" data-ng-show="showDelete && parentobj.selectedAssignee" data-ng-click="unassignee()"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
                </div>
 
                 <input type="text" ng-model="searchAssignee" class="form-control no-border field-no-padding" placeholder="{{parentobj.selectedAssignee?parentobj.selectedAssignee.firstname:'Search user...'}}" data-ng-click="enableOrgUsersBox()" data-ng-show="assigneeOrgusersBoxStatus"/>
@@ -110,7 +110,7 @@
             <div class="row assignee-row unassigned-row" data-ng-class="{'assignee-row-visible':opened,'assignee-row-hover':!opened}" ng-Mouseover="showDueDateDelete=true" ng-mouseleave="showDueDateDelete=false">
                     <div class="col-xs-3 assignee-col">    <i class="icon-calendar icon-with-dot-circle" ng-click="open($event)"></i> </div>
                     <div class="col-xs-9 nopadding assignee-search-col dueDatePicker">
-                       <span class="delete-dueDate" data-ng-click="removeDueDate()" data-ng-show="showDueDateDelete && dueDate"><i class="glyphicon glyphicon-remove-circle"></i></span>
+                       <span class="delete-dueDate" data-ng-click="removeDueDate()" data-ng-show="showDueDateDelete && dueDate"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
                             <input type="text" class="form-control no-border" datepicker-popup="{{format}}" ng-model="dueDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  ng-click="open($event)" placeholder="Due Date" />
 
                       
@@ -169,11 +169,12 @@
               <div class="col-sm-12 attach" data-ng-hide="attachments.length==0 && !files">
 
                   <div ng-repeat="attach in attachments">
-                    <i class="glyphicon glyphicon-paperclip"></i> <span><a href="javascript:void(0)">{{attach.original_name}}</a></span>
+                    <i class="glyphicon glyphicon-paperclip"></i> <span ng-Mouseover="attach.delete_attach=true"  ng-mouseleave="attach.delete_attach=false"> <a ng-href="{{serviceUrl}}download?assert_id={{attach.attach_id}}&token={{parentobj.token}}"  target="_blank">{{attach.original_name}}</a> <span class="delete_attach" data-ng-show="attach.delete_attach && attach.attach_id" data-ng-click="removeAttach(attach,'attachments')"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span> </span>
+
                   </div>
 
                   <div ng-repeat="f in files">
-                    <i class="glyphicon glyphicon-paperclip"></i> <span><a href="javascript:void(0)">{{f.name}}</a></span>
+                    <i class="glyphicon glyphicon-paperclip"></i> <span ng-Mouseover="attach.delete_attach=true"  ng-mouseleave="attach.delete_attach=false"><a ng-href="{{serviceUrl}}/download?assert_id={{f.attach_id}}&token={{parentobj.token}}">{{f.name}}</a><span class="delete_attach" data-ng-show="attach.delete_attach&& f.attach_id" data-ng-click="removeAttach(f,'files')"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
                     <div data-ng-hide="f.progress==100">
                       <span class="progress" ng-show="f.progress >= 0">
                         <div style="width:{{f.progress}}%"  
