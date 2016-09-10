@@ -5665,7 +5665,7 @@ body
     position: absolute;
     top: 0px;
     float: right;
-    right: 70px;
+    right: 0px;
 }
 
 .itemRowView-detailsButton:hover {
@@ -6580,4 +6580,22 @@ background-color: #2E3C54; box-sizing: content-box;
   font-size: 13px;
   cursor: pointer;
   color: #7D8182;
+}
+
+.default-assignee-icon
+{
+  margin-right:5px;
+  margin-left:5px;
+}
+
+.grid_due_date
+{
+  color:#676D76;
+}
+.grid_due_date.due_soon
+{
+  color: #37C597;
+}
+.grid_due_date.overdue{
+  color: #FC636B;
 }

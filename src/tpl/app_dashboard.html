@@ -35,9 +35,20 @@
                 <td>                           
               
 
-              <div class="gridCell-stringContainer" data-ng-class="{'section':task.is_section}">  <input type="text" class="task-input-field" data-ng-model="task.task_name" name="taskname"  data-ng-click="viewTask(this,task,$index)" data-ng-blur="updateTaskName(task)"/>
+              <div class="gridCell-stringContainer" data-ng-class="{'section':task.is_section}">  
+              <input type="text" class="task-input-field" data-ng-model="task.task_name" name="taskname"  data-ng-click="viewTask(this,task,$index)" data-ng-blur="updateTaskName(task)"/>
                 
-                <div class="task-row-overlay grid-tags-and-date" data-ng-if="!parentobj.projectID"><a class="itemRowView-potToken potColor-background--NONE" href="#" id="luna6">{{task.pro_name}}</a><a id="centerpane_row__due_date__SPECIAL_GROUP_NEW_161749887183961"></a></div></div>
+                <div class="task-row-overlay grid-tags-and-date" data-ng-hide="task.is_section">
+                <a class="itemRowView-potToken potColor-background--NONE" href="#" id="luna6" data-ng-if="!parentobj.projectID && task.project_id">{{task.pro_name}}</a><a id="centerpane_row__due_date__SPECIAL_GROUP_NEW_161749887183961"> <span class="grid_due_date {{task.due_on  | dateTimeMoment:'colorIndicator'}}">{{task.due_on|dateTimeMoment}}</span></a> <span data-ng-if="parentobj.projectID">
+                <span data-ng-show="!task.assignee" class="default-assignee-icon"><i class="icon-user icon-with-dot-circle"></i></span>
+                        <a class="thumb-sm avatar thumb-assignee" data-ng-if="task.assignee">
+                              <img data-ng-src="img/thumb/{{task.assignee}}.jpg">
+                          </a>
+                      </span>
+                
+                </div>
+
+                </div>
                 
                </td>
                
@@ -45,7 +56,7 @@
             
                
                
-               <td class="td-user"><i class="icon-user icon-with-dot-circle""></i></td>
+               
 
               </tr>
               </tbody>
