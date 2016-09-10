@@ -5140,11 +5140,10 @@ a.text-#000000:hover {
 {
     width: 100%;
     max-width: 100%;
+    border-collapse: separate;
 }
 .task-table > tbody > tr > td, .task-table > tfoot > tr > td{
-      padding: 0px 6px;
-    border-top: 1px solid #eaeff0;
-    border-bottom: 1px solid #eaeff0;
+      padding: 0px 6px;    
 }
 
 .task-panel-body
@@ -5236,10 +5235,8 @@ a.text-#000000:hover {
 
 .comment-icon-check
 {
-  font-size: 32px;
-  border-color: gray;
-  font-weight: normal;
-  opacity:0.5
+  font-size: 26px;  
+  color: #B9BCC0;  
 }
 .comment-panel-txtarea
 {
@@ -5350,6 +5347,7 @@ a.text-#000000:hover {
 .myHandle {
 
   cursor: move;
+
 }
 .task-holder
 {
@@ -5365,11 +5363,7 @@ body
 {
   overflow-y:hidden;
 }
-.section
-{
-  border-bottom: solid 1px #333;
-  font-weight: bold;
-}
+
 
 .nopadding {
    padding: 0 !important;
@@ -6598,4 +6592,47 @@ background-color: #2E3C54; box-sizing: content-box;
 }
 .grid_due_date.overdue{
   color: #FC636B;
+}
+.checkmark
+{
+  font-size: 20px;
+  color: #B9BCC0
+}
+.dragDrop
+{
+  color: #fff;
+}
+.drag-drop-icon-active
+{
+  color: #B9BCC0;
+}
+
+.grid-row-selected
+{  
+  border-top:1px solid #23b7e5 !important;
+  border-bottom:1px solid #23b7e5 !important;
+ 
+}
+
+.grid-row-non-selected
+{
+    border-top: 1px solid #eaeff0 !important;
+    border-bottom: 1px solid #eaeff0 !important;
+}
+.section-container
+{
+  position: relative;
+}
+.section
+{
+   font-weight: bold;
+}
+.section-container .section
+{
+  border-bottom: solid 1px #333;
+ 
+  position: absolute;
+  top:16px;  
+  width: 99%;
+  left:6px;
 }

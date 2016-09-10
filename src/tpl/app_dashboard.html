@@ -29,11 +29,16 @@
 
               <tbody ui-sortable="sortableOptions" ng-model="parentobj.tasks">
 
-              <tr class="current" data-ng-repeat="task in parentobj.tasks track by task.task_id" class="priority task-row new_tasks_group grid-row-selected in-assigned-to-me-new-task taskRow--willCollapse">
-               <td class="td-reorder myHandle"><i class="glyphicon glyphicon-th"></i></td>
-                <td class="td-check"><i class="icon-check"></i></td>
-                <td>                           
-              
+              <tr class="current" data-ng-repeat="task in parentobj.tasks track by task.task_id" class="priority task-row new_tasks_group grid-row-selected in-assigned-to-me-new-task taskRow--willCollapse" ng-mouseover="task.showDragDrop=true" ng-mouseleave="task.showDragDrop=false">
+               <td class="td-reorder myHandle" data-ng-class="{'grid-row-selected':task.task_id==parentobj.currentViewTaskID,'grid-row-non-selected':task.task_id!=parentobj.currentViewTaskID}">
+               <span class="dragDrop"><i class="glyphicon glyphicon-th drag-drop-icon"  data-ng-class="{'drag-drop-icon-active':task.showDragDrop}"></i></span>
+
+               </td>
+                <td class="td-check" data-ng-class="{'grid-row-selected':task.task_id==parentobj.currentViewTaskID,'grid-row-non-selected':task.task_id!=parentobj.currentViewTaskID}"><i class="icon-check checkmark"></i></td>
+                <td data-ng-class="{'grid-row-selected':task.task_id==parentobj.currentViewTaskID,'grid-row-non-selected':task.task_id!=parentobj.currentViewTaskID}">                           
+              <div class="section-container" data-ng-show="task.is_section && task.task_id!=parentobj.currentViewTaskID">
+                    <div data-ng-class="{'section':task.is_section}">&nbsp;</div>
+              </div>
 
               <div class="gridCell-stringContainer" data-ng-class="{'section':task.is_section}">  
               <input type="text" class="task-input-field" data-ng-model="task.task_name" name="taskname"  data-ng-click="viewTask(this,task,$index)" data-ng-blur="updateTaskName(task)"/>
@@ -44,10 +49,9 @@
                         <a class="thumb-sm avatar thumb-assignee" data-ng-if="task.assignee">
                               <img data-ng-src="img/thumb/{{task.assignee}}.jpg">
                           </a>
-                      </span>
-                
+                      </span>                      
                 </div>
-
+                <div data-ng-class="{'section':task.is_section}">&nbsp;</div>
                 </div>
                 
                </td>
@@ -185,7 +189,7 @@
                   </div>
 
                   <div ng-repeat="f in files">
-                    <i class="glyphicon glyphicon-paperclip"></i> <span ng-Mouseover="attach.delete_attach=true"  ng-mouseleave="attach.delete_attach=false"><a ng-href="{{serviceUrl}}/download?assert_id={{f.attach_id}}&token={{parentobj.token}}">{{f.name}}</a><span class="delete_attach" data-ng-show="attach.delete_attach&& f.attach_id" data-ng-click="removeAttach(f,'files')"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
+                    <i class="glyphicon glyphicon-paperclip"></i> <span ng-Mouseover="attach.delete_attach=true"  ng-mouseleave="attach.delete_attach=false"><a ng-href="{{serviceUrl}}download?assert_id={{f.attach_id}}&token={{parentobj.token}}">{{f.name}}</a><span class="delete_attach" data-ng-show="attach.delete_attach&& f.attach_id" data-ng-click="removeAttach(f,'files')"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
                     <div data-ng-hide="f.progress==100">
                       <span class="progress" ng-show="f.progress >= 0">
                         <div style="width:{{f.progress}}%"  

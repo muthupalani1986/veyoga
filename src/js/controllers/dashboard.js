@@ -81,6 +81,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
         $scope.task = currentScope.task;
         $scope.parentobj.commentPanel = true;
         $scope.parentobj.currentPosition = currentPosition;
+        $scope.parentobj.currentViewTaskID=$scope.currentTask.task.task_id;
         var data = $.param({
             token: localStorage.getItem("token"),
             taskID: $scope.currentTask.task.task_id
