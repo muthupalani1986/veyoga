@@ -9,8 +9,7 @@ angular.module('app')
     	if(typeof colorIndicator!="undefined")
     	{
     		returnClass=true;
-    	}
-    	console.log(returnClass);
+    	}    	
 
 		var REFERENCE = moment(); // fixed just for testing, use moment();
 		var TODAY = REFERENCE.clone().startOf('day');

@@ -529,7 +529,7 @@ $scope.removeAttach=function(attachment,removeFrom){
 
 
     $http.post(domain + 'deleteAssert', data).then(function(response) {
-    console.log("succ");
+    
     },function(){          
    // $state.go('access.signin', {});
     });
