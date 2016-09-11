@@ -3,7 +3,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
 
     $scope.currentTask;
     $scope.serviceUrl=domain;
-    $scope.parentobj.token=localStorage.getItem("token");
+    $scope.parentobj.token=sessionStorage.getItem("token");
     var datefilter = $filter('date');
     $scope.addTask = function(isSection) {
         var is_section;
@@ -17,7 +17,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
         }
 
         var data = $.param({
-            token: localStorage.getItem("token"),
+            token: sessionStorage.getItem("token"),
             task_name: task_name,
             task_description: '',
             projectID: $scope.parentobj.projectID,
@@ -66,7 +66,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             }
 
             var data = $.param({
-                token: localStorage.getItem("token"),
+                token: sessionStorage.getItem("token"),
                 "tasks": JSON.stringify($scope.parentobj.tasks)
             });
             $http.post(domain + 'updateTaskPriority', data).then(function(response) {});
@@ -83,7 +83,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
         $scope.parentobj.currentPosition = currentPosition;
         $scope.parentobj.currentViewTaskID=$scope.currentTask.task.task_id;
         var data = $.param({
-            token: localStorage.getItem("token"),
+            token: sessionStorage.getItem("token"),
             taskID: $scope.currentTask.task.task_id
         });        
          
@@ -181,7 +181,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
     $scope.postConv = function() {
 
         var data = $.param({
-            token: localStorage.getItem("token"),
+            token: sessionStorage.getItem("token"),
             taskID: $scope.currentTask.task.task_id,
             message: $('.conv-editor').html()
         });
@@ -202,7 +202,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
 
     $scope.updateTaskName = function(currentScope) {
         var data = $.param({
-            token: localStorage.getItem("token"),
+            token: sessionStorage.getItem("token"),
             taskID: currentScope.task_id,
             task_name: currentScope.task_name
         });
@@ -227,7 +227,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
 
     $scope.updateTaskDescription = function(currentScope) {
         var data = $.param({
-            token: localStorage.getItem("token"),
+            token: sessionStorage.getItem("token"),
             taskID: currentScope.task_id,
             task_description: currentScope.task_description
         });
@@ -266,7 +266,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             
 
             var data = $.param({
-                token: localStorage.getItem("token"),
+                token: sessionStorage.getItem("token"),
                 "tasks": JSON.stringify($scope.parentobj.tasks)
             });
             $http.post(domain + 'updateTaskPriority', data).then(function(response) {},function(){          
@@ -307,7 +307,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             }
             
             var data = $.param({
-                token: localStorage.getItem("token"),
+                token: sessionStorage.getItem("token"),
                 taskID: $scope.currentTask.task.task_id,                
                 followerData:JSON.stringify(followerData)
             });
@@ -381,7 +381,7 @@ $scope.assignTo=function(assignTo){
     $scope.parentobj.selectedAssignee=assignTo;
     $scope.currentTask.task.assignee=assignTo.user_id;
     var data = $.param({
-                token: localStorage.getItem("token"),
+                token: sessionStorage.getItem("token"),
                 taskID: $scope.currentTask.task.task_id,
                 assignee: assignTo.user_id
             });
@@ -406,7 +406,7 @@ $scope.searchAssignee="";
 
 $scope.unassignee=function(){
     var data = $.param({
-            token: localStorage.getItem("token"),
+            token: sessionStorage.getItem("token"),
             taskID: $scope.currentTask.task.task_id,
             assignee: 0
         });
@@ -438,7 +438,7 @@ $scope.$watch('dueDate', function(newValue, oldvalue) {
             
         }
         var data = $.param({
-            token: localStorage.getItem("token"),
+            token: sessionStorage.getItem("token"),
             taskID: $scope.currentTask.task.task_id,
             due_on: due_on
         });        
@@ -524,7 +524,7 @@ $scope.removeAttach=function(attachment,removeFrom){
 
 
     var data = $.param({
-        token: localStorage.getItem("token"),
+        token: sessionStorage.getItem("token"),
         assert_id: attachment.attach_id
     });        
 
@@ -532,9 +532,91 @@ $scope.removeAttach=function(attachment,removeFrom){
     $http.post(domain + 'deleteAssert', data).then(function(response) {
     
     },function(){          
-   // $state.go('access.signin', {});
+        $state.go('access.signin', {});
     });
 
+
+}
+
+$scope.completed=function(currentObj,position,taskStatus){
+
+    $scope.parentobj.tasks.splice(position,1);
+    if(taskStatus==0)
+    {
+        taskStatus=1;
+    }
+    else
+    {
+      taskStatus=0;  
+    }
+
+    var data = $.param({
+        token: sessionStorage.getItem("token"),
+        taskID: currentObj.task_id,
+        taskStatus:taskStatus,
+        projectID:currentObj.project_id
+    });        
+
+    if(typeof $scope.currentTask!="undefined")
+    {
+        $scope.currentTask.task.completed=taskStatus;
+    }    
+
+    $http.post(domain + 'updateTaskStatus', data).then(function(response) {
+    
+    },function(){          
+        $state.go('access.signin', {});
+    });
+
+}
+
+$scope.markAsComplete=function(taskObj,taskStatus)
+{
+    
+    if(taskStatus==0)
+    {
+        taskStatus=1;
+    }
+    else
+    {
+      taskStatus=0;  
+    }
+    
+    var data = $.param({
+        token: sessionStorage.getItem("token"),
+        taskID: taskObj.task_id,
+        taskStatus:taskStatus,
+        projectID:taskObj.project_id
+    });
+
+    $scope.currentTask.task.completed=taskStatus;
+
+    $http.post(domain + 'updateTaskStatus', data).then(function(response) {
+
+        $scope.parentobj.tasks=response.data.tasks; 
+        if(taskStatus==0)
+        {
+                var currentlyMarkedTask=$.grep($scope.parentobj.tasks, function(item) {
+                    
+                    if(item.task_id==taskObj.task_id){
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                });
+                $scope.task=currentlyMarkedTask[0];
+                
+        }
+            
+            
+
+
+    },function(){          
+        $state.go('access.signin', {});
+    });
 
 }
 

@@ -5237,6 +5237,7 @@ a.text-#000000:hover {
 {
   font-size: 26px;  
   color: #B9BCC0;  
+  cursor: pointer;
 }
 .comment-panel-txtarea
 {
@@ -6585,18 +6586,23 @@ background-color: #2E3C54; box-sizing: content-box;
 .grid_due_date
 {
   color:#676D76;
+  background-color:#fff;
 }
 .grid_due_date.due_soon
 {
   color: #37C597;
+  background-color:#fff;
+
 }
 .grid_due_date.overdue{
   color: #FC636B;
+  background-color:#fff;
 }
 .checkmark
 {
   font-size: 20px;
-  color: #B9BCC0
+  color: #B9BCC0;
+  cursor: pointer;
 }
 .dragDrop
 {
@@ -6607,14 +6613,14 @@ background-color: #2E3C54; box-sizing: content-box;
   color: #B9BCC0;
 }
 
-.grid-row-selected
+tr.grid-row-task-selected td
 {  
   border-top:1px solid #23b7e5 !important;
   border-bottom:1px solid #23b7e5 !important;
  
 }
 
-.grid-row-non-selected
+tr.grid-row-non-selected td
 {
     border-top: 1px solid #eaeff0 !important;
     border-bottom: 1px solid #eaeff0 !important;
@@ -6635,4 +6641,11 @@ background-color: #2E3C54; box-sizing: content-box;
   top:16px;  
   width: 99%;
   left:6px;
+}
+.completed-mark
+{
+  color: #3BE8B0 !important;
+  background-color: #3BE8B0 !important;
+  border-radius: 100px !important;
+  color:#fff !important;
 }

@@ -18,7 +18,7 @@ app.controller('SigninFormController', ['$scope', '$http', '$state','domain', fu
         if ( !response.data.success ) {
           $scope.authError = response.data.message;
         }else{
-          localStorage.setItem("token",response.data.token);
+          sessionStorage.setItem("token",response.data.token);
           sessionStorage.setItem("currentUser",JSON.stringify(response.data.userDetails));
           $state.go('app.dashboard');
         }
