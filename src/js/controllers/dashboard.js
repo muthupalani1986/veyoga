@@ -612,6 +612,7 @@ $scope.completed=function(currentObj,position,taskStatus){
             if(!response.data.success){
               $state.go('access.signin', {});
             }
+            
     },function(){          
         $state.go('access.signin', {});
     });
