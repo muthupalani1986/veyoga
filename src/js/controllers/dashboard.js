@@ -25,6 +25,11 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             isSection: is_section
         });
         $http.post(domain + 'createTask', data).then(function(response) {
+
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
+
             var position;
             if ($scope.parentobj.tasks.length == 0) {
                 position = 0;
@@ -96,6 +101,11 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
         }
         $scope.files="";
         $http.post(domain + 'getConversations', data).then(function(response) {
+
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
+
             $scope.coversation = response.data.coversation;
             $scope.attachments = response.data.attachments;
             $scope.data.followers = [];
@@ -113,8 +123,10 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
         });
 
         $http.post(domain + 'users', data).then(function(response) {
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
             $scope.org_users = response.data.users;
-
             var assigneeFindResult=$.grep($scope.org_users,function(item){
                 if(item.user_id==$scope.currentTask.task.assignee){
                     return true;
@@ -186,6 +198,9 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             message: $('.conv-editor').html()
         });
         $http.post(domain + 'logConversation', data).then(function(response) {
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
             $scope.coversation.push(response.data.conversations[0]);
             $('.conv-editor').html('');
             setHeight();
@@ -220,7 +235,11 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             });
         }
 
-        $http.post(domain + 'updateTaskName', data).then(function(response) {},function(){          
+        $http.post(domain + 'updateTaskName', data).then(function(response) {
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
+        },function(){          
           $state.go('access.signin', {});
         });
 
@@ -234,7 +253,11 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             taskID: currentScope.task_id,
             task_description: currentScope.task_description
         });
-        $http.post(domain + 'updateTaskDescription', data).then(function(response) {},function(){          
+        $http.post(domain + 'updateTaskDescription', data).then(function(response) {
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
+        },function(){          
           $state.go('access.signin', {});
         });
     }
@@ -272,7 +295,12 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
                 token: sessionStorage.getItem("token"),
                 "tasks": JSON.stringify($scope.parentobj.tasks)
             });
-            $http.post(domain + 'updateTaskPriority', data).then(function(response) {},function(){          
+            $http.post(domain + 'updateTaskPriority', data).then(function(response) {
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
+
+            },function(){          
           $state.go('access.signin', {});
         });
 
@@ -318,6 +346,10 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
 
             $http.post(domain + 'taskFolllowers', data).then(function(response) {
                 //console.log("succ");
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
+
             },function(){          
           $state.go('access.signin', {});
         });
@@ -391,7 +423,10 @@ $scope.assignTo=function(assignTo){
                 assignee: assignTo.user_id
             });
             $http.post(domain + 'updateAssignee', data).then(function(response) {
-                
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
+
             },function(){          
           $state.go('access.signin', {});
         });
@@ -418,7 +453,10 @@ $scope.unassignee=function(){
         $scope.currentTask.task.assignee="";
         $scope.parentobj.selectedAssignee="";
         $http.post(domain + 'updateAssignee', data).then(function(response) {
-            
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
+
         },function(){          
       $state.go('access.signin', {});
     });
@@ -450,7 +488,10 @@ $scope.$watch('dueDate', function(newValue, oldvalue) {
             
 
         $http.post(domain + 'updateDueDate', data).then(function(response) {
-           
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
+
         },function(){          
       $state.go('access.signin', {});
     });
@@ -568,7 +609,9 @@ $scope.completed=function(currentObj,position,taskStatus){
     }    
 
     $http.post(domain + 'updateTaskStatus', data).then(function(response) {
-    
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
     },function(){          
         $state.go('access.signin', {});
     });
@@ -591,33 +634,15 @@ $scope.markAsComplete=function(taskObj,taskStatus)
         token: sessionStorage.getItem("token"),
         taskID: taskObj.task_id,
         taskStatus:taskStatus,
-        projectID:taskObj.project_id
+        projectID:taskObj.project_id,
+        currentTab: $scope.parentobj.currentTab
     });
 
     $scope.currentTask.task.completed=taskStatus;
 
     $http.post(domain + 'updateTaskStatus', data).then(function(response) {
-
         $scope.parentobj.tasks=response.data.tasks; 
-        if(taskStatus==0)
-        {
-                var currentlyMarkedTask=$.grep($scope.parentobj.tasks, function(item) {
-                    
-                    if(item.task_id==taskObj.task_id){
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                });
-                $scope.task=currentlyMarkedTask[0];
-                
-        }
-            
-            
-
+        $scope.task=response.data.currentTask[0];
 
     },function(){          
         $state.go('access.signin', {});
@@ -629,10 +654,9 @@ $scope.commentBoxSizeStatus=false;
     setHeight();   
     if($scope.followersbox){
         $scope.reduceConHolderSize();
-    }    
-     
+    }
     $scope.commentBoxSizeStatus=false       
-    //$scope.reduceConHolderSize();
+    
   
 }
 

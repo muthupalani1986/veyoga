@@ -160,11 +160,11 @@
           <div class="row comments-top-buffer">
               <div class="col-sm-12">                
                 <div class="row">
-                  <div class="col-xs-2 comment-icon-column">
-
+                  <div class="col-xs-1">
+                  
                     <i class="icon-check comment-icon-check" data-ng-click="markAsComplete(task,task.completed)" data-ng-class="{'completed-mark':task.completed==1}"></i>
                   </div>
-                  <div class="col-xs-10 column-comment">
+                  <div class="col-xs-11 column-comment">
                     <div class="form-group">
                     <textarea class="msd-elastic form-control comment-panel-txtarea autogrow-textarea" data-ng-model="task.task_name" data-ng-keyup="syncToTaskPanel()" data-ng-blur="updateTaskName(task)" rows="1"></textarea>
                     </div>
