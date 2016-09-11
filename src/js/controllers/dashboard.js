@@ -279,7 +279,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
     };
 
     function setHeight() {
-        var windowHeight = $(window).innerHeight() - 150;
+        var windowHeight = $(window).innerHeight() - 80;
         $('.task-holder-panel').css('height', windowHeight);
         $('.task-holder').css('height', windowHeight - 80);
         $('.task-conv-holder').css('height', windowHeight - 300);

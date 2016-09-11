@@ -5291,6 +5291,9 @@ a.text-#000000:hover {
 {
    border-top:1px solid #ccc;
    padding-top: 5px;
+   position: absolute;
+   bottom: 50px ;
+   width: 100%;
 }
 
 .followers-table
@@ -6648,4 +6651,8 @@ tr.grid-row-non-selected td
   background-color: #3BE8B0 !important;
   border-radius: 100px !important;
   color:#fff !important;
+}
+.task-holder-panel
+{
+  position: relative;
 }
