@@ -175,8 +175,8 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
         class: 'datepicker'
     };
     
-    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    $scope.format = $scope.formats[0];    
+    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate','MMM d, yyyy'];
+    $scope.format = $scope.formats[4];    
 
     $scope.postConv = function() {
 
@@ -188,6 +188,9 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
         $http.post(domain + 'logConversation', data).then(function(response) {
             $scope.coversation.push(response.data.conversations[0]);
             $('.conv-editor').html('');
+            setHeight();
+            $scope.commentBoxSizeStatus=false;
+
             $(".task-conv-holder").animate({
                 scrollTop: $('.task-conv-holder').prop("scrollHeight")
             }, 20);
@@ -282,7 +285,8 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
         var windowHeight = $(window).innerHeight() - 80;
         $('.task-holder-panel').css('height', windowHeight);
         $('.task-holder').css('height', windowHeight - 80);
-        $('.task-conv-holder').css('height', windowHeight - 300);
+        
+        $('.task-conv-holder').css('height', windowHeight - 220);
     };
     setHeight();
     $(window).resize(function() {
@@ -290,11 +294,11 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
     });
 
     $scope.followersbox = false;
-
-
-    //$scope.follow=["CA"];
     $scope.addFollowers = function() {
+        setHeight();
         $scope.followersbox = true;
+        $scope.reduceConHolderSize();
+        
     }
 
     $scope.$watch('data.followers', function(newValue, oldvalue) {
@@ -323,11 +327,12 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
 
 
     $(window).click(function(e) {
-
+        
         if (!$(e.target).hasClass('add-follows')) {
             if (!$('.chosen-container').hasClass('chosen-container-active')) {
                 $scope.$apply(function() {
                     $scope.followersbox = false;
+                    //setHeight();
                 });
             }
 
@@ -386,7 +391,7 @@ $scope.assignTo=function(assignTo){
                 assignee: assignTo.user_id
             });
             $http.post(domain + 'updateAssignee', data).then(function(response) {
-                console.log("succ");
+                
             },function(){          
           $state.go('access.signin', {});
         });
@@ -413,7 +418,7 @@ $scope.unassignee=function(){
         $scope.currentTask.task.assignee="";
         $scope.parentobj.selectedAssignee="";
         $http.post(domain + 'updateAssignee', data).then(function(response) {
-            console.log("succ");
+            
         },function(){          
       $state.go('access.signin', {});
     });
@@ -445,7 +450,7 @@ $scope.$watch('dueDate', function(newValue, oldvalue) {
             
 
         $http.post(domain + 'updateDueDate', data).then(function(response) {
-            console.log("succ");
+           
         },function(){          
       $state.go('access.signin', {});
     });
@@ -464,7 +469,7 @@ $scope.uploadFiles = function(files, errFiles) {
         $scope.errFiles = errFiles;
         $scope.isUploadInProgress=false;
         angular.forEach(files, function(file) {
-            console.log("here");
+            
             file.upload = Upload.upload({
                 url: domain +'saveAttachment?token='+$scope.parentobj.token,
                 data: {taskID:$scope.currentTask.task.task_id,file: file}
@@ -474,7 +479,7 @@ $scope.uploadFiles = function(files, errFiles) {
                 $timeout(function () {
                     file.result = response.data;
                     file.attach_id=response.data.attach_id;
-                    console.log(response.data.attach_id);
+                    
                 });
             }, function (response) {
                 if (response.status > 0)
@@ -482,7 +487,7 @@ $scope.uploadFiles = function(files, errFiles) {
             }, function (evt) {
                 file.progress = Math.min(100, parseInt(100.0 * 
                                          evt.loaded / evt.total));
-                console.log(file.progress);
+                
                 if(file.progress!=100){
                     $scope.isUploadInProgress=true;
                 }
@@ -618,6 +623,29 @@ $scope.markAsComplete=function(taskObj,taskStatus)
         $state.go('access.signin', {});
     });
 
+}
+$scope.commentBoxSizeStatus=false;
+    $scope.minimizeCommentBox=function(){ 
+    setHeight();   
+    if($scope.followersbox){
+        $scope.reduceConHolderSize();
+    }    
+     
+    $scope.commentBoxSizeStatus=false       
+    //$scope.reduceConHolderSize();
+  
+}
+
+$scope.maxCommentBox=function(){
+   
+    $scope.reduceConHolderSize();
+    $scope.commentBoxSizeStatus=true;
+}
+
+$scope.reduceConHolderSize=function(){
+    setHeight();    
+    var convHolderHeight=$('.task-conv-holder').css('height');
+    $('.task-conv-holder').css('height', parseInt(convHolderHeight)-85);
 }
 
 }]);

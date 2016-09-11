@@ -5258,8 +5258,8 @@ a.text-#000000:hover {
 
 .comment-icon-column
 {
-  width: 10%;
-  margin-top: 16px;
+  width: 15%;
+  padding-left: 30px;
 }
 
 .column-comment
@@ -5270,7 +5270,7 @@ a.text-#000000:hover {
 {
   border:1px solid #ccc;
   border-radius: 2px;
-  padding: 10px;
+  padding:2px 2px 2px 2px;
 }
 .comment-editor-box:hover
 {
@@ -5283,17 +5283,15 @@ a.text-#000000:hover {
 .comment-editor
 {
   overflow:auto;
-  height:auto;
+  height:20px;
   max-height:150px;
-  overflow-x:hidden;
+  overflow-x:hidden;  
 }
 .followers-row
 {
    border-top:1px solid #ccc;
    padding-top: 5px;
-   position: absolute;
-   bottom: 50px ;
-   width: 100%;
+
 }
 
 .followers-table
@@ -6656,3 +6654,36 @@ tr.grid-row-non-selected td
 {
   position: relative;
 }
+.details_pane_footer
+{
+  position: absolute;
+  bottom: 10px;
+  background-color: #fff;
+
+}
+.pane-footer-top
+{
+  bottom:100px !important;
+}
+.dividerLine
+{
+    padding: 10px 0 10px 0; 
+    border-top: solid 1px #E1E2E4;
+}
+.comment-editor-holder
+{
+  margin-left:-10px;
+}
+.comment-btn
+{
+  padding-right: 7px;
+}
+.comment-editor-resize{
+  height: 98px !important;
+
+}
+.add-follows
+{
+  cursor: pointer;
+}
+    

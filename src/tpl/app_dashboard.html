@@ -55,12 +55,6 @@
                 </div>
                 
                </td>
-               
-               
-            
-               
-               
-               
 
               </tr>
               </tbody>
@@ -216,43 +210,38 @@
         </div>
         </div>  
 
-      
+<div class="row">
 
-       <div class="row">
-              <div class="col-sm-12"> 
+        <div class="details_pane_footer" data-ng-class="{'pane-footer-top':followersbox}">
 
+              <div class="col-sm-12 dividerLine"> 
                 <div class="row">
+                    
                     <div class="col-xs-2 comment-icon-column">
                     <a class="thumb-sm avatar thumb-sm-comment">
                     <img src="img/a2.jpg" alt="...">
                     </a>
                     </div>
-                    <div class="col-xs-10 column-comment">
+                    <div class="col-xs-10 comment-editor-holder" outside-click="minimizeCommentBox()" data-ng-click="maxCommentBox()">
 
-
-                              <div class="comment-editor-box">
-                                <div ui-jq="wysiwyg" class="comment-editor conv-editor">                          
+                              <div class="comment-editor-box" >
+                                <div ui-jq="wysiwyg" class="comment-editor conv-editor" data-ng-class="{'comment-editor-resize':commentBoxSizeStatus}">                          
                               </div>  
 
-                              <div class="right-align"><button type="submit" class="btn btn-sm btn-info" data-ng-click="postConv()">Comment</button></div>
+                              <div class="right-align comment-btn"><button type="submit" class="btn btn-sm btn-info" data-ng-click="postConv()">Comment</button></div>
 
                               </div>
                     </div>
                 </div>
               </div>
 
-          </div>
-
-
-
-
-           <div class="row followers-row top-buffer comments-top-buffer">
-              <div class="col-sm-12"> 
+           
+              <div class="col-sm-12 dividerLine"> 
                 
                 <table class="table followers-table">
                 <tbody>
                   <tr>
-                    <td>Followres</td>
+                    <td><span style="margin-left:4px">Followres</span></td>
                     <td style="width:70%">
                     <div data-ng-show="!followersbox">   
                     <a class="thumb-sm avatar thumb-sm-comment" data-ng-repeat="follow in data.followers">
@@ -278,7 +267,7 @@
 
               </div>
             </div>
-           
+      </div>     
 
 
         </div>
