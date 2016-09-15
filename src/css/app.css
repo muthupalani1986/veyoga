@@ -895,7 +895,7 @@ body {
   display: inline-block;
   float: none;
   height: auto;
-  padding: 0 42px;
+  padding: 0px;
   font-size: 20px;
   font-weight: 700;
   line-height: 50px;
@@ -911,18 +911,25 @@ body {
     vertical-align: middle;
     text-align: center;
     margin: auto;
-    padding-top: 7px;
+    padding:7px 10px 0px 15px;
+}
+
+
+.loginimg img{
+min-height: 68px;
+padding-top: 20px;
+
 }
 
 @media (min-width: 768px) {
   .app-aside,
   .navbar-header {
-    width: 220px;
+    width: 240px;
   }
   .navbar-collapse,
   .app-content,
   .app-footer {
-    margin-left: 220px;
+    margin-left: 240px;
   }
   .app-aside-right {
     position: absolute;
@@ -1211,7 +1218,7 @@ html {
 .navi ul.nav li a {
   position: relative;
   display: block;
-  padding: 5px 5px;
+  padding: 5px 15px;
   font-weight: normal;
   text-transform: none;
   -webkit-transition: background-color 0.2s ease-in-out 0s;
@@ -3028,6 +3035,7 @@ fieldset[disabled] .i-checks input + i:before {
 .bg-black {
   color: #7793a7;
   background-color: #2E3C54;
+  
 }
 
 .bg-black.lt,
@@ -3072,7 +3080,7 @@ fieldset[disabled] .i-checks input + i:before {
 .bg-black .nav > li:hover > a,
 .bg-black .nav > li:focus > a {
   color: #ffffff;
-  background-color: #01A5E4;
+  background-color: #1AAFD0;
 }
 
 .bg-black .nav > li.active > a {
@@ -3098,7 +3106,9 @@ fieldset[disabled] .i-checks input + i:before {
   color: #869fb1;
 }
 
-.bg-black .nav > li > a:hover,
+.bg-black .nav > li > a:hover{
+ background-color: #19a9d5;
+}
 .bg-black .nav > li > a:focus {
   background-color: #16232d;
 }
@@ -5296,6 +5306,7 @@ a.text-#000000:hover {
 
 .followers-table
 {
+  font-size: 12px;
     width: 100%;
     max-width: 100%;
 }
@@ -6398,7 +6409,7 @@ a {
     color: #1B2432;
     line-height: 35px;
     font-size: 40px;
-    padding: 10px 30px 30px;
+    padding: 9px 0px 12px;
     text-transform: none;
 }
 
@@ -6439,9 +6450,9 @@ a {
     -ms-flex-pack: center;
     background-color: #01A5E4;
     background-image: -webkit-linear-gradient(bottom left, #01A5E4 10%, #02A3cA 65%, #013643 125%);
-    /* manual- background-image: linear-gradient(to top right,#fc7279 10%, #ff7b9c 65%, #ffc019 125%);*/
+   background-image: linear-gradient(to top right,#fc7279 10%, #ff7b9c 65%, #ffc019 125%);
   /*Green - background-image: linear-gradient(to top right,#66B025 10%, #63A222 65%, #ff9000 125%);*/
-    background-image: linear-gradient(to top right,#01A5E4 10%, #02A3cA 65%, #013643 140%);
+    /* manual-  background-image: linear-gradient(to top right,#01A5E4 10%, #02A3cA 65%, #013643 140%);*/
     min-height: 100vh;
     margin-top:-50px;
   }
@@ -6586,16 +6597,19 @@ background-color: #2E3C54; box-sizing: content-box;
 
 .grid_due_date
 {
+  font-size: 12px;
   color:#676D76;
   background-color:#fff;
 }
 .grid_due_date.due_soon
 {
+  font-size: 12px;
   color: #37C597;
   background-color:#fff;
 
 }
 .grid_due_date.overdue{
+  font-size: 12px;
   color: #FC636B;
   background-color:#fff;
 }
