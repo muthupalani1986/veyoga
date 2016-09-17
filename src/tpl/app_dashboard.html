@@ -70,7 +70,7 @@
 
     </div>
     <div class="col-sm-6" data-ng-show="parentobj.commentPanel">
-      <div class="panel panel-default task-holder-panel">        
+      <div class="panel panel-default task-holder-panel" data-ng-mouseover="convInitializing=false;">        
         <div class="panel-body comments-panel-body">
           <div class="row comments-panel-header">
           
@@ -120,7 +120,7 @@
                     <div class="col-xs-3 assignee-col">    <i class="icon-calendar icon-with-dot-circle" ng-click="open($event)"></i> </div>
                     <div class="col-xs-9 nopadding assignee-search-col dueDatePicker">
                        <span class="delete-dueDate" data-ng-click="removeDueDate()" data-ng-show="showDueDateDelete && dueDate"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
-                            <input type="text" class="form-control no-border" datepicker-popup="{{format}}" ng-model="dueDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  ng-click="open($event)" placeholder="Due Date" />
+                            <input type="text" class="form-control no-border" datepicker-popup="{{format}}" ng-model="dueDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  ng-click="open($event)" placeholder="Due Date"/>
 
                       
 
@@ -195,15 +195,18 @@
 
               </div>
               
-
+        <div class="row">
+          <div class="col-xs-12 small-feed-story-group"><span class="feed-story-creator">muthukumar</span> <span class="comment-text">created task</span> <span class="inline-timestamp">4:04pm</span></div>
+        </div>
         <div class="row thread-row" data-ng-repeat="conv in coversation track by $index">
-              <div class="col-xs-2 thread-icon-column"> 
+              <div class="col-xs-1"> 
                                    <a class="thumb-sm avatar thumb-sm-comment">
                     <img src="img/a2.jpg" alt="...">
                     </a>
               </div>
-              <div class="col-xs-10"  ng-bind-html="trustAsHtml(conv.text)">
-                  
+              <div class="col-xs-11">
+                    <div><span ng-bind="conv.firstname" class="conv-created-by"></span> <span ng-bind="conv.created_at|convCreatedDateTime" class="conv-createdTimeStamp"></span></div>
+                    <div ng-bind-html="trustAsHtml(conv.text)"></div>
               </div>
         </div>
 

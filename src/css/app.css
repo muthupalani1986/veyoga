@@ -6576,6 +6576,7 @@ background-color: #2E3C54; box-sizing: content-box;
   padding: 10px 0 10px 0;
   border-top:solid 1px #dee5e7;
   border-bottom:solid 1px #dee5e7;
+  margin-bottom: 15px;
 }
 .progress-block
 {
@@ -6700,5 +6701,35 @@ tr.grid-row-non-selected td
 .add-follows
 {
   cursor: pointer;
+}
+.conv-created-by
+{
+  color: #1B2432;
+  font-weight: 600;  
+}
+.conv-createdTimeStamp
+{
+  color: #898E95;
+  font-size:12px;
+  white-space:nowrap;
+}
+.small-feed-story-group
+{
+  line-height:17px;
+  font-size:12px;
+  color:#898E95;
+  padding-left:56px;
+}
+.feed-story-creator
+{  
+  font-weight:600;
+}
+.comment-text
+{
+
+}
+.inline-timestamp
+{
+
 }
     

@@ -120,4 +120,63 @@ angular.module('app')
 
 		
     }
+  })
+  .filter('convCreatedDateTime', function() {
+
+  		return function(created_at){
+
+		var REFERENCE = moment(); // fixed just for testing, use moment();
+		var TODAY = REFERENCE.clone().startOf('day');
+		var YESTERDAY = REFERENCE.clone().subtract(1, 'days').startOf('day');
+		var A_WEEK_OLD = REFERENCE.clone().subtract(7, 'days').startOf('day');
+		var TOMORROW = REFERENCE.clone().add(1, 'days').startOf('day');
+		function isToday(momentDate) {
+		    return momentDate.isSame(TODAY, 'd');
+		}
+		function isYesterday(momentDate) {
+		    return momentDate.isSame(YESTERDAY, 'd');
+		}
+		function isTomorrow(momentDate) {
+		    return momentDate.isSame(TOMORROW, 'd');
+		}
+
+		function isWithinAWeek(momentDate) {
+		    return momentDate.isAfter(A_WEEK_OLD);
+		}
+		function isTwoWeeksOrMore(momentDate) {
+		    return !isWithinAWeek(momentDate);
+		}
+
+		if(isToday(moment(created_at))){
+
+				return 'Today'+' at '+moment(created_at).format('h:mm a');
+			}
+
+		if(isYesterday(moment(created_at))){
+				return 'Yesterday'+' at '+moment(created_at).format('h:mm a');
+		}
+
+		if(isWithinAWeek(moment(created_at))){
+			return moment(created_at).format('dddd') +' at '+moment(created_at).format('h:mm a');
+		}
+  			var isValid=moment(created_at).isValid();			
+			if(isValid){
+			var currentDateISO=new Date().toISOString();
+			var currentYear = moment(currentDateISO).format("YYYY");
+			var dueOnYear=moment(created_at).format("YYYY");
+			if(dueOnYear==currentYear){
+				return moment(created_at).format('MMM DD')+' at '+moment(created_at).format('h:mm a');
+			}
+			else{
+				return moment(created_at).format('MMM DD, YYYY') +' at '+moment(created_at).format('h:mm a');
+			}
+			
+
+			}
+			else
+			{
+				return '';
+			}
+
+  		}
   });

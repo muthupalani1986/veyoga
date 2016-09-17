@@ -82,8 +82,10 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
     }
     $scope.data = {};
     $scope.viewTask = function(currentScope, details, currentPosition) {
+        $scope.convInitializing = true;
         $scope.currentTask = currentScope;
         $scope.task = currentScope.task;
+        $scope.taskCopy=angular.copy($scope.task);
         $scope.parentobj.commentPanel = true;
         $scope.parentobj.currentPosition = currentPosition;
         $scope.parentobj.currentViewTaskID=$scope.currentTask.task.task_id;
@@ -115,7 +117,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
 
             $('.task-conv-holder').animate({
                 scrollTop: 0
-            }, 0);
+            }, 0);           
 
             $scope.followStatus();
         },function(){          
@@ -148,6 +150,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
     }
 
     $scope.syncToTaskPanel = function() {
+       
         $scope.currentTask.task = $scope.task;
     }
 
@@ -206,9 +209,10 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             setHeight();
             $scope.commentBoxSizeStatus=false;
 
-            $(".task-conv-holder").animate({
+            /*$(".task-conv-holder").animate({
                 scrollTop: $('.task-conv-holder').prop("scrollHeight")
-            }, 20);
+            }, 20);*/
+            $scope.scrollDownConv();
 
         },function(){          
           $state.go('access.signin', {});
@@ -219,47 +223,55 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
     $scope.trustAsHtml = $sce.trustAsHtml;
 
     $scope.updateTaskName = function(currentScope) {
-        var data = $.param({
-            token: sessionStorage.getItem("token"),
-            taskID: currentScope.task_id,
-            task_name: currentScope.task_name
-        });
-        if (currentScope.is_section == 1) {
-            $scope.parentobj.tasks = $.grep($scope.parentobj.tasks, function(item) {
-                if (item.section_id == currentScope.task_id) {
-                    item.section_name = currentScope.task_name;
-                    return true;
-                } else {
-                    return true;
-                }
+        
+        if($scope.taskCopy.task_name!=currentScope.task_name)
+        {
+            var data = $.param({
+                token: sessionStorage.getItem("token"),
+                taskID: currentScope.task_id,
+                task_name: currentScope.task_name
             });
-        }
-
-        $http.post(domain + 'updateTaskName', data).then(function(response) {
-            if(!response.data.success){
-              $state.go('access.signin', {});
+            if (currentScope.is_section == 1) {
+                $scope.parentobj.tasks = $.grep($scope.parentobj.tasks, function(item) {
+                    if (item.section_id == currentScope.task_id) {
+                        item.section_name = currentScope.task_name;
+                        return true;
+                    } else {
+                        return true;
+                    }
+                });
             }
-        },function(){          
-          $state.go('access.signin', {});
-        });
 
+            $http.post(domain + 'updateTaskName', data).then(function(response) {
+                if(!response.data.success){
+                  $state.go('access.signin', {});
+                }
+            },function(){          
+              $state.go('access.signin', {});
+            });
+            $scope.taskCopy=angular.copy(currentScope);
+        }
 
 
     }
 
     $scope.updateTaskDescription = function(currentScope) {
-        var data = $.param({
-            token: sessionStorage.getItem("token"),
-            taskID: currentScope.task_id,
-            task_description: currentScope.task_description
-        });
-        $http.post(domain + 'updateTaskDescription', data).then(function(response) {
-            if(!response.data.success){
+
+        if($scope.taskCopy.task_description!=currentScope.task_description){
+            var data = $.param({
+                token: sessionStorage.getItem("token"),
+                taskID: currentScope.task_id,
+                task_description: currentScope.task_description
+            });
+            $http.post(domain + 'updateTaskDescription', data).then(function(response) {
+                if(!response.data.success){
+                  $state.go('access.signin', {});
+                }
+            },function(){          
               $state.go('access.signin', {});
-            }
-        },function(){          
-          $state.go('access.signin', {});
-        });
+            });
+            $scope.taskCopy=angular.copy(currentScope);
+        }
     }
 
 
@@ -413,14 +425,16 @@ $scope.followStatus=function(){
         }
     }
 
-$scope.assignTo=function(assignTo){    
+$scope.assignTo=function(assignTo){
+    if($scope.taskCopy.user_id!=assignTo.user_id){
     $scope.assigneeOrgusersBoxStatus=false;        
     $scope.parentobj.selectedAssignee=assignTo;
     $scope.currentTask.task.assignee=assignTo.user_id;
     var data = $.param({
                 token: sessionStorage.getItem("token"),
                 taskID: $scope.currentTask.task.task_id,
-                assignee: assignTo.user_id
+                assignee: assignTo.user_id,
+                isAssigneeRemoved:false
             });
             $http.post(domain + 'updateAssignee', data).then(function(response) {
             if(!response.data.success){
@@ -436,6 +450,8 @@ $scope.assignTo=function(assignTo){
             taskFollow.push(assignTo.user_id);            
         }
         $scope.data.followers=taskFollow;
+        $scope.taskCopy.user_id=assignTo.user_id;
+    }
 
 }
 
@@ -445,10 +461,13 @@ $scope.searchAssignee="";
 }
 
 $scope.unassignee=function(){
+
     var data = $.param({
             token: sessionStorage.getItem("token"),
             taskID: $scope.currentTask.task.task_id,
-            assignee: 0
+            assignee: 0,
+            isAssigneeRemoved:true,
+            unAssignedFrom:$scope.currentTask.task.assignee
         });
         $scope.currentTask.task.assignee="";
         $scope.parentobj.selectedAssignee="";
@@ -464,46 +483,59 @@ $scope.unassignee=function(){
 
 }
 
-$scope.$watch('dueDate', function(newValue, oldvalue) {
-    if(newValue!=oldvalue){          
-        var due_on=datefilter(newValue, 'yyyy-MM-dd HH:mm:ss');
-        if(typeof due_on=="undefined" || due_on=="" || due_on === null){
-           due_on="0000-00-00 00:00:00"; 
-           $scope.currentTask.task.due_on="";
-        }
-        else
-        {
-            var dueDate=$filter('filter')(due_on,'yyy-MM-dd');
-           var extractDate= dueDate.split(" ");
-           var splitDate=extractDate[0].split('-');
-           var validDueOn=splitDate[0]+"-"+splitDate[1]+"-"+splitDate[2];           
-            $scope.currentTask.task.due_on=validDueOn; 
-            
-        }
-        var data = $.param({
-            token: sessionStorage.getItem("token"),
-            taskID: $scope.currentTask.task.task_id,
-            due_on: due_on
-        });        
-            
+$scope.$watch('dueDate', function(newValue, oldvalue) {    
+    if(newValue!=oldvalue){
 
-        $http.post(domain + 'updateDueDate', data).then(function(response) {
-            if(!response.data.success){
-              $state.go('access.signin', {});
+            if($scope.convInitializing){
+                //$timeout(function() { $scope.convInitializing = false; });
+                $scope.convInitializing = false;
             }
+            else{
+                var isValid=moment(newValue).isValid();
+                if(isValid){
+                    var due_on_ISOString=moment(newValue).toISOString();
+                    var due_on=moment(due_on_ISOString).format("YYYY-MM-DD HH:mm:ss");
+                }
+                else
+                {
+                    due_on="";
+                }
+                var isDueDateRemoved;
+                if($scope.isDueDateRemoved){
+                    $scope.isDueDateRemoved=false;
+                    isDueDateRemoved=true;
+                }
+                else{
+                    isDueDateRemoved=false;
+                }
+                $scope.currentTask.task.due_on=due_on;  
+                var data = $.param({
+                    token: sessionStorage.getItem("token"),
+                    taskID: $scope.currentTask.task.task_id,
+                    due_on: due_on,
+                    isDueDateRemoved:isDueDateRemoved
+                });        
+                    
 
-        },function(){          
-      $state.go('access.signin', {});
-    });
+                $http.post(domain + 'updateDueDate', data).then(function(response) {
+                    if(!response.data.success){
+                      $state.go('access.signin', {});
+                    }
+
+                },function(){          
+              $state.go('access.signin', {});
+            });
+        }
 
     }
 },true);
 
 $scope.removeDueDate=function(){
+
 $scope.currentTask.task.due_on="";
 $scope.dueDate="";
+$scope.isDueDateRemoved=true;
 }
-
 
 $scope.uploadFiles = function(files, errFiles) {
         $scope.files = files;        
@@ -671,6 +703,14 @@ $scope.reduceConHolderSize=function(){
     setHeight();    
     var convHolderHeight=$('.task-conv-holder').css('height');
     $('.task-conv-holder').css('height', parseInt(convHolderHeight)-85);
+    $scope.scrollDownConv();
+}
+
+$scope.scrollDownConv=function(){
+
+    $(".task-conv-holder").animate({
+                scrollTop: $('.task-conv-holder').prop("scrollHeight")
+            }, 0);
 }
 
 }]);
