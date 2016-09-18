@@ -196,7 +196,14 @@
               </div>
               
         <div class="row">
-          <div class="col-xs-12 small-feed-story-group"><span class="feed-story-creator">muthukumar</span> <span class="comment-text">created task</span> <span class="inline-timestamp">4:04pm</span></div>
+
+          <div class="col-xs-12 small-feed-story-group">
+            <div data-ng-repeat="log in activityLogs track by $index">
+            
+            <span class="feed-story-creator">{{log.logby}}</span> <span class="comment-text">{{log.act_name}}</span><span data-ng-show="log.act_id==1||log.act_id==5||log.act_id==6||log.act_id==7||log.act_id==10">.</span> <span ng-bind="log|storyaffected"></span> <span class="inline-timestamp" ng-bind="log.created_at|convCreatedDateTime"></span>
+            </div>
+          </div>  
+
         </div>
         <div class="row thread-row" data-ng-repeat="conv in coversation track by $index">
               <div class="col-xs-1"> 

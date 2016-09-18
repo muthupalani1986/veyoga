@@ -179,4 +179,54 @@ angular.module('app')
 			}
 
   		}
+  })
+  .filter('storyaffected', function() {
+  	return function(logData){
+  		var currentUser = JSON.parse(sessionStorage.getItem('currentUser')); 
+  		if(logData.act_id==1){
+  			return '';
+  		}
+  		if(logData.act_id==2 ||logData.act_id==8){
+
+  			if(currentUser.user_id==logData.assigned_to){
+
+  				return 'you'+'. ';
+  			}
+  			else
+  			{
+  				return logData.assignee_name+'. ';
+  			}
+  		}
+  		if(logData.act_id==3){
+  			return logData.pro_name +'. ';
+  		}
+
+  		if(logData.act_id==4){
+
+  			 var isValid=moment(logData.due_date).isValid();			
+			if(isValid){
+			var currentDateISO=new Date().toISOString();
+			var currentYear = moment(currentDateISO).format("YYYY");
+			var dueOnYear=moment(logData.due_date).format("YYYY");
+			if(dueOnYear==currentYear){
+				return moment(logData.due_date).format('MMM DD')+'. ';
+			}
+			else{
+				return moment(logData.due_date).format('MMM DD, YYYY')+'. ';
+			}
+			
+
+			}
+			else
+			{
+				return '';
+			}
+
+  			//return logData.due_date;
+
+  		}  		
+
+  		return '';
+  	}
+
   });

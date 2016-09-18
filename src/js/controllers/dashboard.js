@@ -56,6 +56,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             
 
             $scope.parentobj.tasks.splice(position, 0, response.data.task[0]);
+            $scope.parentobj.currentViewTaskID=response.data.task[0].task_id;
 
             if (response.data.task[0].is_section) {
                 
@@ -69,7 +70,8 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
                     }
                 }
             }
-
+            var obj={"task":response.data.task[0]};
+            $scope.viewTask(obj,obj,position);
             var data = $.param({
                 token: sessionStorage.getItem("token"),
                 "tasks": JSON.stringify($scope.parentobj.tasks)
@@ -78,6 +80,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
         },function(){          
           $state.go('access.signin', {});
         });
+
 
     }
     $scope.data = {};
@@ -110,6 +113,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
 
             $scope.coversation = response.data.coversation;
             $scope.attachments = response.data.attachments;
+            $scope.activityLogs = response.data.activityLogs;
             $scope.data.followers = [];
             $.grep(response.data.followers, function(item) {
                 $scope.data.followers.push(item.user_id);
@@ -208,11 +212,7 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             $('.conv-editor').html('');
             setHeight();
             $scope.commentBoxSizeStatus=false;
-
-            /*$(".task-conv-holder").animate({
-                scrollTop: $('.task-conv-holder').prop("scrollHeight")
-            }, 20);*/
-            $scope.scrollDownConv();
+            $timeout(function() { $scope.scrollDownConv(); },200);
 
         },function(){          
           $state.go('access.signin', {});
@@ -229,7 +229,8 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             var data = $.param({
                 token: sessionStorage.getItem("token"),
                 taskID: currentScope.task_id,
-                task_name: currentScope.task_name
+                task_name: currentScope.task_name,
+                old_task_name:$scope.taskCopy.task_name
             });
             if (currentScope.is_section == 1) {
                 $scope.parentobj.tasks = $.grep($scope.parentobj.tasks, function(item) {
@@ -261,7 +262,8 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             var data = $.param({
                 token: sessionStorage.getItem("token"),
                 taskID: currentScope.task_id,
-                task_description: currentScope.task_description
+                task_description: currentScope.task_description,
+                old_task_description:$scope.taskCopy.task_description
             });
             $http.post(domain + 'updateTaskDescription', data).then(function(response) {
                 if(!response.data.success){
@@ -500,6 +502,17 @@ $scope.$watch('dueDate', function(newValue, oldvalue) {
                 {
                     due_on="";
                 }
+
+                var isValid=moment(oldvalue).isValid();
+                if(isValid){
+                    var old_due_on_ISOString=moment(oldvalue).toISOString();
+                    var old_due_on=moment(old_due_on_ISOString).format("YYYY-MM-DD HH:mm:ss");
+                }
+                else
+                {
+                    old_due_on="";
+                }
+                
                 var isDueDateRemoved;
                 if($scope.isDueDateRemoved){
                     $scope.isDueDateRemoved=false;
@@ -508,12 +521,13 @@ $scope.$watch('dueDate', function(newValue, oldvalue) {
                 else{
                     isDueDateRemoved=false;
                 }
-                $scope.currentTask.task.due_on=due_on;  
+                $scope.currentTask.task.due_on=due_on_ISOString;  
                 var data = $.param({
                     token: sessionStorage.getItem("token"),
                     taskID: $scope.currentTask.task.task_id,
                     due_on: due_on,
-                    isDueDateRemoved:isDueDateRemoved
+                    isDueDateRemoved:isDueDateRemoved,
+                    old_due_on:old_due_on
                 });        
                     
 
