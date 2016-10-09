@@ -1,11 +1,17 @@
 'use strict';
-app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$filter','Upload','$timeout', function($scope, $http, $state, domain, $sce,$filter,Upload, $timeout) {
+app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$filter','Upload','$timeout','socket', function($scope, $http, $state, domain, $sce,$filter,Upload, $timeout,socket) {
+
+socket.reconnectSocket();
+socket.on('connect', function (data) {
+    socket.emit("disconnect","");    
+    socket.storeClientInfo();
+});
 
     $scope.currentTask;
     $scope.serviceUrl=domain;
     $scope.parentobj.token=sessionStorage.getItem("token");
     var datefilter = $filter('date');
-    $scope.addTask = function(isSection) {
+    $scope.addTask = function(isSection) {        
         var is_section;
         var task_name;
         if (typeof isSection != 'undefined') {
@@ -205,6 +211,22 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             message: $('.conv-editor').html()
         });
         $http.post(domain + 'logConversation', data).then(function(response) {
+            
+            var currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            var notifyFollowers=[];
+            $.grep($scope.data.followers,function(item){
+                if(currentUser.user_id==item){
+                    return false;
+                }
+                else
+                {
+                    notifyFollowers.push(item);
+                    return true;
+                }
+            });
+
+            
+
             if(!response.data.success){
               $state.go('access.signin', {});
             }
@@ -212,7 +234,9 @@ app.controller('dashboard', ['$scope', '$http', '$state', 'domain', '$sce','$fil
             $('.conv-editor').html('');
             setHeight();
             $scope.commentBoxSizeStatus=false;
-            $timeout(function() { $scope.scrollDownConv(); },200);
+            $timeout(function() { $scope.scrollDownConv(); 
+                socket.emit('updateInbox',{"followers":notifyFollowers});
+            },200);
 
         },function(){          
           $state.go('access.signin', {});
@@ -726,5 +750,81 @@ $scope.scrollDownConv=function(){
                 scrollTop: $('.task-conv-holder').prop("scrollHeight")
             }, 0);
 }
+
+$scope.inboxTaskView=function(inbox){
+     $scope.parentobj.commentPanel=true;
+     $scope.currentInboxComment=inbox;
+    var obj={"task":inbox.taskDetails};
+    var position=0;
+    $scope.viewTask(obj,obj,position);
+    //console.log("here");
+
+}
+
+$scope.archieveInbox=function(archieveInbox){
+    $scope.parentobj.commentPanel=false;
+    $scope.parentobj.inbox=$.grep($scope.parentobj.inbox,function(item){
+        if(item.taskDetails.task_id==archieveInbox.taskDetails.task_id){
+            return false;
+        }
+        else{
+            return true;
+        }
+
+    });
+    var task_ids=[];
+    task_ids.push(archieveInbox.taskDetails.task_id);
+    var data = $.param({token: sessionStorage.getItem("token"),task_ids: JSON.stringify(task_ids)});
+    $http.post(domain + 'archieveMyInbox', data).then(function(response) {
+        console.log("success");
+
+    },function(){          
+        $state.go('access.signin', {});
+    });
+
+}
+
+
+socket.on("updateInbox",function(data){
+
+    if($scope.parentobj.currentTab='myInbox'){    
+        $timeout(function(){
+    $scope.$apply(function(){
+
+            var data=$.param({token:sessionStorage.getItem("token")});
+              $http.post(domain+'myInbox',data).then(function(response){
+              $scope.parentobj.inbox=response.data.inbox.inbox;
+              setHeight();
+              if(!response.data.success){
+              $state.go('access.signin', {});
+              }
+              },function(){          
+              $state.go('access.signin', {});
+              });
+              //$('.currentInboxTask').trigger('click'); 
+              if($scope.parentobj.commentPanel==true){    
+                //$scope.inboxTaskView($scope.currentInboxComment);
+                $timeout(function(){
+                   // $('.currentInboxTask').trigger('click');    
+                },0);
+                
+                //var obj={"task":$scope.currentInboxComment};
+                //var position=0;
+               // $scope.viewTask(obj,obj,position);
+                //$scope.viewTask($scope.currentTask, $scope.currentTask,position);
+              }
+        });
+
+        },0);
+    }
+
+$scope.test=function(){
+    console.log("here");
+}
+
+});
+
+
+
 
 }]);

@@ -15,4 +15,17 @@ angular.module('app')
         });
       }
     };
-  });
+  }).directive('onFinishRender', function ($timeout) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+          console.log("here");
+          console.log(scope.$last);
+            if (scope.$last === true) {
+                $timeout(function () {                   
+                   $('.currentInboxTask').trigger('click'); 
+                },100);
+            }
+        }
+    }
+});

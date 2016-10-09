@@ -20,8 +20,8 @@
           <span>{{snav.team.team_name}}</span>
         </a>
       </li>
-      <li ui-sref-active="active" data-ng-repeat="snavpro in snav.team.projects">
-        <a ui-sref="app.dashboard" data-ng-click="getTasks(snavpro)">
+      <li ui-sref-active="active" data-ng-repeat="snavpro in snav.team.projects" data-ng-class="{'active':parentobj.projectID==snavpro.pro_id}">
+        <a ui-sref="app.dashboard" data-ng-click="getTasks(snavpro)" >
           <span>{{snavpro.pro_name}}</span>
         </a>
       </li>

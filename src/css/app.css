@@ -5234,6 +5234,8 @@ a.text-#000000:hover {
   top: 0;
   padding:6px;
   margin-top: -11px;
+  color: #898E95;
+  cursor: pointer;
 }
 .comments-project-name
 {
@@ -6732,4 +6734,89 @@ tr.grid-row-non-selected td
 {
 
 }
-    
+.inbox-archive-all-button,.inbox-email-setting-menu
+{
+    border-bottom: 1px dotted #898E95;
+    color: #898E95;
+    fill: #898E95;
+    font-size: 12px;
+}
+.inbox-header
+{
+  border-bottom: 1px solid #E1E2E4;
+  padding:1px 0px 14px 0px; 
+  margin-left:0;
+  margin-right:0;
+}
+.inbox-thread-wrapper
+{
+  
+  border-bottom:1px solid #E1E2E4;  
+}
+.no-margins{
+    margin-left:0;
+  margin-right:0;
+}   
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+.archieve-button
+{
+  
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #898E95;
+  cursor: pointer;
+}
+.inboxThreadView-threadGroup{
+  padding: 15px 0;
+}
+.inbox-holder
+{
+  overflow: auto;
+}
+
+.inboxThreadView-typeHeader
+{
+  color:#898E95;
+  font-size:12px;
+}
+.inboxThreadView-typeName
+{
+  position:relative;
+  top:-2px;
+}
+.notification-header
+{
+  margin-bottom:15px;
+
+}
+.notification-header .notification-title
+{
+    font-family: "proxima-nova","Helvetica Neue",Arial,sans-serif;
+    line-height: 26px;
+    font-size: 20px;
+    font-weight: 600;
+    margin: -3px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.commentStoryView-content
+{
+  margin-left:41px;
+}
+.currentInboxTask{
+  background: #E8F7FB;
+}
+
+
+
+
+
+
+

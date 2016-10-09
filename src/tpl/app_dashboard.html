@@ -1,14 +1,14 @@
 
 <div class="bg-light lter b-b wrapper-md">
-  <h1 class="m-n font-bold h3"><span data-ng-if="parentobj.projectID">{{parentobj.proDetails.pro_name}}</span> <span data-ng-if="!parentobj.projectID">My Tasks</span></h1>
-</div>
+  <h1 class="m-n font-bold h3"><span data-ng-if="parentobj.projectID">{{parentobj.proDetails.pro_name}}</span> <span data-ng-if="parentobj.currentTab=='myTasks'">My Tasks</span> <span data-ng-if="parentobj.currentTab=='myInbox'">Inbox</span> </h1>  
+</div> 
 
 <div class="row wrapper-md" data-ng-controller="dashboard">
     <div  data-ng-class="{'col-sm-6':parentobj.commentPanel,'col-sm-12':!parentobj.commentPanel}">
       <div class="panel panel-default task-holder-panel">        
         <div class="panel-body task-panel-body">
 
-          <div class="row task-row">
+          <div class="row task-row" data-ng-if="parentobj.currentTab!='myInbox'">
             <div class="col-sm-6">            
               <button type="submit" class="btn btn-sm btn-info" data-ng-click="addTask()">Add Task</button> 
                       <button type="submit" class="btn btn-sm btn-info" data-ng-click="addTask('isSection')">Add Section</button>
@@ -20,7 +20,7 @@
 
           </div>
 
-          <div class="row task-top-buffer">
+          <div class="row task-top-buffer" data-ng-if="parentobj.currentTab!='myInbox'">
             <div class="col-sm-12">
 
                <div class="task-holder">
@@ -63,12 +63,49 @@
             </div>
           </div>
 
- 
+          <div class="row inbox-header" data-ng-if="parentobj.currentTab=='myInbox'">
+            <div class="col-sm-6">
+              <span><a href="#" class="inbox-archive-all-button">Archive All </a></span>
+            </div>
+            <div class="col-sm-6 right-align">
+            <span><a href="#" class="inbox-email-setting-menu">Email Notifications: On </a>
+            </div>
+          </div>          
+          
+          <div class="row no-margins inbox-holder" data-ng-if="parentobj.currentTab=='myInbox'">
+              <div class="col-xs-12">
+                  <div class="row row-eq-height inbox-thread-wrapper"  data-ng-repeat="inbox in parentobj.inbox" data-ng-click="inboxTaskView(inbox)" data-ng-class="{'currentInboxTask':inbox.taskDetails.task_id==parentobj.currentViewTaskID}" on-finish-render="test()">          
+                      <div class="col-sm-11">
+                          <div class="inboxThreadView-threadGroup">
+                            <div class="inboxThreadView-typeHeader"><i class="icon-check"></i> <span class="inboxThreadView-typeName">Task</span></div>
+                            <div class="notification-header"><div class="notification-title"><span class="task-name">{{inbox.taskDetails.task_name}}</span></div></div>
+                            <div class="notifications" data-ng-repeat="unreadComment in inbox.unreadComments">
+                              <span><a class="thumb-sm avatar thumb-sm-comment">
+                                  <img data-ng-src="img/thumb/{{unreadComment.user_id}}.jpg">
+                              </a> </span>
+                              <span  class="conv-created-by" data-ng-bind="unreadComment.firstname"></span> <span class="conv-createdTimeStamp" ng-bind="unreadComment.created_at|convCreatedDateTime"></span>
+                              <div class="commentStoryView-content">
+                                <div ng-bind-html="trustAsHtml(unreadComment.text)"></div>
+                              </div>
+                            </div>
+                          
+                          </div>
+                      </div>
+                      <div class="col-sm-1 archieve-button" data-ng-click="archieveInbox(inbox);$event.stopPropagation();">
+                          X
+                      </div>                       
+                  </div>
+              </div> 
+          </div>
+
 
         </div>
       </div>
 
     </div>
+
+
+    
     <div class="col-sm-6" data-ng-show="parentobj.commentPanel">
       <div class="panel panel-default task-holder-panel" data-ng-mouseover="convInitializing=false;">        
         <div class="panel-body comments-panel-body">
@@ -139,7 +176,7 @@
       </span>
       
 
-            <i class="glyphicon glyphicon-remove comment-close-icon" data-ng-click="closeConversationPanel()"></i>
+            <span class="comment-close-icon" data-ng-click="closeConversationPanel()">X</span>
 
             </div>  
           </div>
