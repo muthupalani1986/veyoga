@@ -187,8 +187,9 @@
           <div class="row comments-top-buffer">
               <div class="col-sm-12">
 
-                <span class="comments-project-name">{{task.pro_name}}</span>
+                <span> <span data-ng-if="parentobj.projectID" class="comments-project-name">{{task.pro_name}}</span> <span data-ng-if="!parentobj.projectID">No project</span> </span>
                 <span data-ng-if="task.section_id!=null">{{task.section_name}}</span>
+
               </div>
 
             
@@ -288,8 +289,8 @@
                 <table class="table followers-table">
                 <tbody>
                   <tr>
-                    <td><span style="margin-left:4px">Followres</span></td>
-                    <td style="width:70%">
+                    <td><span class="follow-col-left">Followers</span></td>
+                    <td class="follow-col-right">
                     <div data-ng-show="!followersbox">   
                     <a class="thumb-sm avatar thumb-sm-comment" data-ng-repeat="follow in data.followers">
                     <img src="img/a2.jpg" alt="...">
@@ -303,8 +304,10 @@
                     </select>
                     </div>
                     </td>
-                    <td style="vertical-align: middle;">
+                    <td>
+                    <span class="following">
                     <i class="fa fa-bell"></i> <a href="javascript:void(0)" data-ng-click="unfollowTask()" data-ng-show="userFollowStatus">Following</a> <a href="javascript:void(0)" data-ng-click="followTask()" data-ng-show="!userFollowStatus">Follow task</a>
+                    </span>
                     </td>
                   </tr>
                   </tbody>

@@ -350,9 +350,9 @@ socket.on('connect', function (data) {
     function setHeight() {
         var windowHeight = $(window).innerHeight() - 80;
         $('.task-holder-panel').css('height', windowHeight);
-        $('.task-holder').css('height', windowHeight - 80);
-        
+        $('.task-holder').css('height', windowHeight - 80);        
         $('.task-conv-holder').css('height', windowHeight - 220);
+        $('.navi').css('height', $(window).innerHeight());        
     };
     setHeight();
     $(window).resize(function() {

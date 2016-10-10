@@ -3,6 +3,7 @@
 app.controller('sidenav', ['$scope', '$http', '$state','domain','$sce','$rootScope','socket', function($scope, $http, $state,domain,$sce,$rootScope,socket) {
  $scope.parentobj = {};
 $scope.parentobj.currentTab='myTasks';
+$scope.parentobj.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
 var data=$.param({token:sessionStorage.getItem("token")});
 $http.post(domain+'sidenav',data).then(function(response){                        
   $scope.parentobj.sidenav=response.data.sidenav;

@@ -28,4 +28,14 @@ angular.module('app')
             }
         }
     }
+}).directive('afterRender', function ($timeout) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+                $timeout(function () {                   
+                   $('.navi').css('height', $(window).innerHeight());
+                },100);
+            
+        }
+    }
 });
