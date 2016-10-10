@@ -187,7 +187,7 @@
           <div class="row comments-top-buffer">
               <div class="col-sm-12">
 
-                <span> <span data-ng-if="parentobj.projectID" class="comments-project-name">{{task.pro_name}}</span> <span data-ng-if="!parentobj.projectID">No project</span> </span>
+                <span> <span data-ng-if="task.pro_id" class="comments-project-name">{{task.pro_name}}</span> <span data-ng-if="!task.pro_id">No project</span> </span>
                 <span data-ng-if="task.section_id!=null">{{task.section_name}}</span>
 
               </div>
