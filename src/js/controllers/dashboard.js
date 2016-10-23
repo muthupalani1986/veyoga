@@ -512,8 +512,7 @@ $scope.unassignee=function(){
 $scope.$watch('dueDate', function(newValue, oldvalue) {    
     if(newValue!=oldvalue){
 
-            if($scope.convInitializing){
-                //$timeout(function() { $scope.convInitializing = false; });
+            if($scope.convInitializing){                
                 $scope.convInitializing = false;
             }
             else{
@@ -756,8 +755,7 @@ $scope.inboxTaskView=function(inbox){
      $scope.currentInboxComment=inbox;
     var obj={"task":inbox.taskDetails};
     var position=0;
-    $scope.viewTask(obj,obj,position);
-    //console.log("here");
+    $scope.viewTask(obj,obj,position);    
 
 }
 
@@ -790,7 +788,6 @@ socket.on("updateInbox",function(data){
     if($scope.parentobj.currentTab='myInbox'){    
         $timeout(function(){
     $scope.$apply(function(){
-
             var data=$.param({token:sessionStorage.getItem("token")});
               $http.post(domain+'myInbox',data).then(function(response){
               $scope.parentobj.inbox=response.data.inbox.inbox;
@@ -801,30 +798,11 @@ socket.on("updateInbox",function(data){
               },function(){          
               $state.go('access.signin', {});
               });
-              //$('.currentInboxTask').trigger('click'); 
-              if($scope.parentobj.commentPanel==true){    
-                //$scope.inboxTaskView($scope.currentInboxComment);
-                $timeout(function(){
-                   // $('.currentInboxTask').trigger('click');    
-                },0);
-                
-                //var obj={"task":$scope.currentInboxComment};
-                //var position=0;
-               // $scope.viewTask(obj,obj,position);
-                //$scope.viewTask($scope.currentTask, $scope.currentTask,position);
-              }
         });
 
         },0);
     }
 
-$scope.test=function(){
-    console.log("here");
-}
-
 });
-
-
-
 
 }]);

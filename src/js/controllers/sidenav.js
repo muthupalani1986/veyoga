@@ -1,9 +1,15 @@
 'use strict';
 
-app.controller('sidenav', ['$scope', '$http', '$state','domain','$sce','$rootScope','socket', function($scope, $http, $state,domain,$sce,$rootScope,socket) {
+app.controller('sidenav', ['$scope', '$http', '$state','domain','$sce','$rootScope','socket', '$modal','$localStorage','$sessionStorage',function($scope, $http, $state,domain,$sce,$rootScope,socket,$modal,$localStorage,$sessionStorage) {
  $scope.parentobj = {};
 $scope.parentobj.currentTab='myTasks';
 $scope.parentobj.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+if(angular.isDefined($sessionStorage.currentProjectDetails)){
+    $scope.parentobj.currentProjectID=$sessionStorage.currentProjectDetails.project_id;    
+}
+if(angular.isDefined($sessionStorage.currentTeamDetails)){    
+    $scope.parentobj.currentTeamId=$sessionStorage.currentTeamDetails.team_id;}
+
 var data=$.param({token:sessionStorage.getItem("token")});
 $http.post(domain+'sidenav',data).then(function(response){                        
   $scope.parentobj.sidenav=response.data.sidenav;
@@ -44,7 +50,10 @@ $scope.getTasks=function(projectDetails){
         $scope.parentobj.proDetails=projectDetails;
         $scope.parentobj.commentPanel=false; 
         $scope.parentobj.currentPosition=null;  
-        $scope.parentobj.currentTab='getTasks';
+        $scope.parentobj.currentTab='getTasks';        
+        var obj={"project_id":projectDetails.pro_id}
+        $sessionStorage.currentProjectDetails = obj;
+        $scope.parentobj.currentProjectID=projectDetails.pro_id;
         if(!response.data.success){
           $state.go('access.signin', {});
         }
@@ -54,26 +63,12 @@ $scope.getTasks=function(projectDetails){
         });
 }
 
-/*$scope.mytask=function(){  
-  var data=$.param({token:sessionStorage.getItem("token")});
-  $http.post(domain+'myTasks',data).then(function(response){                        
-    $scope.parentobj.tasks=response.data.myTasks;
-    //$scope.commentPanel=false;
-    $scope.parentobj.commentPanel=false;
-    $scope.parentobj.currentTab='myTasks';
-    $scope.parentobj.projectID=0;
-    if(!response.data.success){
-      $state.go('access.signin', {});
-    }
-
-  },function(){          
-          $state.go('access.signin', {});
-        });
-}*/
 
 $scope.logout=function(){
   socket.emit('logoff',"");
   sessionStorage.removeItem('token');
+  delete $sessionStorage.currentProjectDetails;
+  delete $sessionStorage.currentTeamDetails;
   $state.go('access.signin', {});
 }
 
@@ -111,6 +106,26 @@ function setHeight() {
     $(window).resize(function() {
         setHeight();
     });
+
+
+
+$scope.newProPopup = function (teamObject) {
+  
+  var modalInstance = $modal.open(
+    {templateUrl: 'tpl/popups/new_project.html',controller:'popupNewProject',
+    resolve: {
+      team:function(){
+        return teamObject;
+      }
+    }
+});
+
+}
+
+$scope.setTeamValue=function(team){  
+  var obj={"team_id":team.team.team_id};
+  $sessionStorage.currentTeamDetails = obj;  
+}
 
 
   }]);

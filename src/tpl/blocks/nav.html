@@ -5,7 +5,7 @@
   <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
     <span translate="aside.nav.HEADER">Reports</span>
   </li>
-  <li data-ng-repeat="snav in parentobj.sidenav track by $index">
+  <li data-ng-repeat="snav in parentobj.sidenav track by $index" data-ng-class="{'active':parentobj.currentTeamId==snav.team.team_id}" data-ng-click="setTeamValue(snav)">
     <a href class="auto">      
       <span class="pull-right text-muted">
         <i class="fa fa-fw fa-angle-right text"></i>
@@ -20,8 +20,9 @@
           <span>{{snav.team.team_name}}</span>
         </a>
       </li>
-      <li ui-sref-active="active" data-ng-repeat="snavpro in snav.team.projects" data-ng-class="{'active':parentobj.projectID==snavpro.pro_id}">
-        <a ui-sref="app.dashboard" data-ng-click="getTasks(snavpro)" >
+      <li><div class="new-project-row"><span class="new-project-text">PROJECTS</span> <div class="new-project-icon-column"><i class="icon-plus add-follows" data-ng-click="newProPopup(snav.team)"></i></div></div></li>
+      <li  data-ng-repeat="snavpro in snav.team.projects" data-ng-class="{'active':parentobj.currentProjectID==snavpro.pro_id}" on-finish-render>
+        <a ui-sref="app.dashboard" data-ng-click="getTasks(snavpro)" data-ng-class="{'current-project':parentobj.currentProjectID==snavpro.pro_id}">
           <span>{{snavpro.pro_name}}</span>
         </a>
       </li>

@@ -6864,8 +6864,32 @@ tr.grid-row-non-selected td
   position:relative;
   top:18px;
 }
-
-
-
+.new-project-icon-column
+{
+  float: right;
+  margin-right:18px;
+}
+.new-project-text
+{
+  margin-left: 32px;
+}
+.new-project-row
+{
+  margin-top: 4px;
+}
+.popup-modal-title
+{
+  color: #1b2432;
+}
+.newProjectForm-buttonRow
+{
+  text-align: right;
+}
+.newProjectForm-descriptionAdd
+{
+    border-bottom:1px dotted #898e95;
+    color:#898e95;
+    cursor: pointer;
+}
 
 

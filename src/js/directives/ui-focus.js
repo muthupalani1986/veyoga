@@ -18,12 +18,12 @@ angular.module('app')
   }).directive('onFinishRender', function ($timeout) {
     return {
         restrict: 'A',
-        link: function (scope, element, attr) {
-          console.log("here");
-          console.log(scope.$last);
+        link: function (scope, element, attr) {         
+          
             if (scope.$last === true) {
                 $timeout(function () {                   
-                   $('.currentInboxTask').trigger('click'); 
+                   $('.currentInboxTask').trigger('click');
+                   $('.current-project').trigger('click');
                 },100);
             }
         }

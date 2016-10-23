@@ -74,7 +74,7 @@
           
           <div class="row no-margins inbox-holder" data-ng-if="parentobj.currentTab=='myInbox'">
               <div class="col-xs-12">
-                  <div class="row row-eq-height inbox-thread-wrapper"  data-ng-repeat="inbox in parentobj.inbox" data-ng-click="inboxTaskView(inbox)" data-ng-class="{'currentInboxTask':inbox.taskDetails.task_id==parentobj.currentViewTaskID}" on-finish-render="test()">          
+                  <div class="row row-eq-height inbox-thread-wrapper"  data-ng-repeat="inbox in parentobj.inbox" data-ng-click="inboxTaskView(inbox)" data-ng-class="{'currentInboxTask':inbox.taskDetails.task_id==parentobj.currentViewTaskID}" on-finish-render>          
                       <div class="col-sm-11">
                           <div class="inboxThreadView-threadGroup">
                             <div class="inboxThreadView-typeHeader"><i class="icon-check"></i> <span class="inboxThreadView-typeName">Task</span></div>
