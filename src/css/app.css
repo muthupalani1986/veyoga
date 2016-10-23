@@ -3090,7 +3090,7 @@ fieldset[disabled] .i-checks input + i:before {
  
   background-color: #131e26;
 
-  color: #A2B4BC;
+  color: #fff;
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
     box-flex: 1;
@@ -3106,7 +3106,7 @@ fieldset[disabled] .i-checks input + i:before {
 }
 
 .bg-black .nav > li > a {
-  color: #869fb1;
+  color: #fff;
 }
 
 .bg-black .nav > li > a:hover{
@@ -6876,6 +6876,7 @@ tr.grid-row-non-selected td
 .new-project-row
 {
   margin-top: 4px;
+  color: #fff;
 }
 .popup-modal-title
 {
@@ -6892,4 +6893,12 @@ tr.grid-row-non-selected td
     cursor: pointer;
 }
 
+.navigationDockSectionHeaderView-header{
+    border-bottom: 1px solid #676D76;
+    color: #fff;
+  }
+
+.has-error{
+  border-color:#FF0000; 
+}
 

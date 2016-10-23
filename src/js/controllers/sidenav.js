@@ -122,6 +122,11 @@ $scope.newProPopup = function (teamObject) {
 
 }
 
+$scope.newTeamPopup = function () {  
+  var modalInstance = $modal.open({templateUrl: 'tpl/popups/new_team.html',controller:'popupNewTeam'});
+
+}
+
 $scope.setTeamValue=function(team){  
   var obj={"team_id":team.team.team_id};
   $sessionStorage.currentTeamDetails = obj;  

@@ -7,7 +7,7 @@
   <div class="form-group">
     <label class="control-label col-sm-3" for="proName">PROJECT NAME</label>
     <div class="col-sm-9">
-      <input type="text" class="form-control" name="proName" required id="proName" data-ng-model="pro.proName">
+      <input type="text" class="form-control" name="proName" required id="proName" data-ng-model="pro.proName" data-ng-class="{'has-error':newProjectForm.proName.$error.required}">
     </div>
   </div>
 
