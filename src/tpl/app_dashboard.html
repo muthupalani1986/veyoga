@@ -183,7 +183,7 @@
                   <div class="row comments-top-buffer">
                      <div class="col-xs-12">
                   <table class="task-table" id="grid">
-                        <tbody ui-sortable="sortableOptions" ng-model="subtasks">
+                        <tbody ui-sortable="subTasksortableOptions" ng-model="subtasks">
                            <tr class="current" data-ng-repeat="task in subtasks track by task.task_id" class="priority task-row new_tasks_group grid-row-selected in-assigned-to-me-new-task taskRow--willCollapse" ng-mouseover="task.showDragDrop=true" ng-mouseleave="task.showDragDrop=false" data-ng-class="{'grid-row-task-selected':task.task_id==parentobj.currentViewTaskID,'grid-row-non-selected':task.task_id!=parentobj.currentViewTaskID}">
                               <td class="td-reorder myHandle">
                                  <span class="dragDrop"><i class="glyphicon glyphicon-th drag-drop-icon"  data-ng-class="{'drag-drop-icon-active':task.showDragDrop}"></i></span>

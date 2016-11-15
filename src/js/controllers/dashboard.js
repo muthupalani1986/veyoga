@@ -349,6 +349,28 @@ socket.on('connect', function (data) {
         helper: fixHelper
     };
 
+    $scope.subTasksortableOptions = {
+        handle: '> .myHandle',
+        update: function(e, ui) {},
+        stop: function(e, ui) {        
+                var data = $.param({
+                    token: sessionStorage.getItem("token"),
+                    "tasks": JSON.stringify($scope.subtasks)
+                });
+
+                $http.post(domain + 'updateTaskPriority', data).then(function(response) {
+                if(!response.data.success){
+                  $state.go('access.signin', {});
+                }
+
+                },function(){          
+              $state.go('access.signin', {});
+            });        
+
+        },
+
+        helper: fixHelper
+    };
     function setHeight() {
         var windowHeight = $(window).innerHeight() - 80;
         $('.task-holder-panel').css('height', windowHeight);
