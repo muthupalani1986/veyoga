@@ -6608,6 +6608,13 @@ background-color: #2E3C54; box-sizing: content-box;
   color: #9e9e9e;
 }
 
+.remove-icon-attach
+{  
+  cursor: pointer;
+  color: #9e9e9e;
+}
+
+
 .default-assignee-icon
 {
   margin-right:5px;
