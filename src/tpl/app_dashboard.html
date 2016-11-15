@@ -1,326 +1,304 @@
-
 <div class="bg-light lter b-b wrapper-md">
-  <h1 class="m-n font-bold h3"><span data-ng-if="parentobj.projectID">{{parentobj.proDetails.pro_name}}</span> <span data-ng-if="parentobj.currentTab=='myTasks'">My Tasks</span> <span data-ng-if="parentobj.currentTab=='myInbox'">Inbox</span> </h1>  
-</div> 
-
+   <h1 class="m-n font-bold h3"><span data-ng-if="parentobj.projectID">{{parentobj.proDetails.pro_name}}</span> <span data-ng-if="parentobj.currentTab=='myTasks'">My Tasks</span> <span data-ng-if="parentobj.currentTab=='myInbox'">Inbox</span> </h1>
+</div>
 <div class="row wrapper-md" data-ng-controller="dashboard">
-    <div  data-ng-class="{'col-sm-6':parentobj.commentPanel,'col-sm-12':!parentobj.commentPanel}">
-      <div class="panel panel-default task-holder-panel">        
-        <div class="panel-body task-panel-body">
-
-          <div class="row task-row" data-ng-if="parentobj.currentTab!='myInbox'">
-            <div class="col-sm-6">            
-              <button type="submit" class="btn btn-sm btn-info" data-ng-click="addTask()">Add Task</button> 
-                      <button type="submit" class="btn btn-sm btn-info" data-ng-click="addTask('isSection')">Add Section</button>
-
+   <div  data-ng-class="{'col-sm-6':parentobj.commentPanel,'col-sm-12':!parentobj.commentPanel}">
+      <div class="panel panel-default task-holder-panel">
+         <div class="panel-body task-panel-body">
+            <div class="row task-row" data-ng-if="parentobj.currentTab!='myInbox'">
+               <div class="col-sm-6">            
+                  <button type="submit" class="btn btn-sm btn-info" data-ng-click="addTask()">Add Task</button> 
+                  <button type="submit" class="btn btn-sm btn-info" data-ng-click="addTask('isSection')">Add Section</button>
+               </div>
+               <div class="col-sm-6 right-align">
+                  <a href="#">View:Incompleted Task</a>
+               </div>
             </div>
-            <div class="col-sm-6 right-align">
-              <a href="#">View:Incompleted Task</a>
+            <div class="row task-top-buffer" data-ng-if="parentobj.currentTab!='myInbox'">
+               <div class="col-sm-12">
+                  <div class="task-holder">
+                     <table class="task-table" id="grid">
+                        <tbody ui-sortable="sortableOptions" ng-model="parentobj.tasks">
+                           <tr class="current" data-ng-repeat="task in parentobj.tasks track by task.task_id" class="priority task-row new_tasks_group grid-row-selected in-assigned-to-me-new-task taskRow--willCollapse" ng-mouseover="task.showDragDrop=true" ng-mouseleave="task.showDragDrop=false" data-ng-class="{'grid-row-task-selected':task.task_id==parentobj.currentViewTaskID,'grid-row-non-selected':task.task_id!=parentobj.currentViewTaskID}">
+                              <td class="td-reorder myHandle">
+                                 <span class="dragDrop"><i class="glyphicon glyphicon-th drag-drop-icon"  data-ng-class="{'drag-drop-icon-active':task.showDragDrop}"></i></span>
+                              </td>
+                              <td class="td-check" data-ng-click="completed(task,$index,task.completed)"><i class="icon-check checkmark" data-ng-class="{'completed-mark':task.completed==1}"></i></td>
+                              <td >
+                                 <div class="section-container" data-ng-show="task.is_section && task.task_id!=parentobj.currentViewTaskID">
+                                    <div data-ng-class="{'section':task.is_section}">&nbsp;</div>
+                                 </div>
+                                 <div class="gridCell-stringContainer" data-ng-class="{'section':task.is_section}">
+                                    <input type="text" class="task-input-field task_{{task.task_id}}" data-ng-model="task.task_name" name="taskname"  data-ng-click="viewTask(this,task,$index)" data-ng-blur="updateTaskName(task)"/>
+                                    <div class="task-row-overlay grid-tags-and-date" data-ng-hide="task.is_section">
+                                       <span data-ng-if="task.parent_id!=0"> <i class="fa fa-angle-left"></i> {{task.parent_name}}</span>
+                                       
+                                       <a class="itemRowView-potToken potColor-background--NONE" href="#" id="luna6" data-ng-if="!parentobj.projectID && task.project_id">{{task.pro_name}}</a>
+                                       <a id="centerpane_row__due_date__SPECIAL_GROUP_NEW_161749887183961"> <span class="grid_due_date {{task.due_on  | dateTimeMoment:'colorIndicator'}}">{{task.due_on|dateTimeMoment}}</span></a> <span data-ng-if="parentobj.projectID">
+                                       <span data-ng-show="!task.assignee" class="default-assignee-icon"><i class="icon-user icon-with-dot-circle"></i></span>
+                                       <a class="thumb-sm avatar thumb-assignee" data-ng-if="task.assignee">
+                                       <img data-ng-src="img/thumb/{{task.assignee}}.jpg">
+                                       </a>
+                                       </span>                      
+                                    </div>
+                                    <div data-ng-class="{'section':task.is_section}">&nbsp;</div>
+                                 </div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
             </div>
-
-          </div>
-
-          <div class="row task-top-buffer" data-ng-if="parentobj.currentTab!='myInbox'">
-            <div class="col-sm-12">
-
-               <div class="task-holder">
-
-              <table class="task-table" id="grid">
-
-              <tbody ui-sortable="sortableOptions" ng-model="parentobj.tasks">
-
-              <tr class="current" data-ng-repeat="task in parentobj.tasks track by task.task_id" class="priority task-row new_tasks_group grid-row-selected in-assigned-to-me-new-task taskRow--willCollapse" ng-mouseover="task.showDragDrop=true" ng-mouseleave="task.showDragDrop=false" data-ng-class="{'grid-row-task-selected':task.task_id==parentobj.currentViewTaskID,'grid-row-non-selected':task.task_id!=parentobj.currentViewTaskID}">
-               <td class="td-reorder myHandle">
-               <span class="dragDrop"><i class="glyphicon glyphicon-th drag-drop-icon"  data-ng-class="{'drag-drop-icon-active':task.showDragDrop}"></i></span>
-
-               </td>
-                <td class="td-check" data-ng-click="completed(task,$index,task.completed)"><i class="icon-check checkmark" data-ng-class="{'completed-mark':task.completed==1}"></i></td>
-                <td >                           
-              <div class="section-container" data-ng-show="task.is_section && task.task_id!=parentobj.currentViewTaskID">
-                    <div data-ng-class="{'section':task.is_section}">&nbsp;</div>
-              </div>
-
-              <div class="gridCell-stringContainer" data-ng-class="{'section':task.is_section}">  
-              <input type="text" class="task-input-field" data-ng-model="task.task_name" name="taskname"  data-ng-click="viewTask(this,task,$index)" data-ng-blur="updateTaskName(task)"/>
-                
-                <div class="task-row-overlay grid-tags-and-date" data-ng-hide="task.is_section">
-                <a class="itemRowView-potToken potColor-background--NONE" href="#" id="luna6" data-ng-if="!parentobj.projectID && task.project_id">{{task.pro_name}}</a><a id="centerpane_row__due_date__SPECIAL_GROUP_NEW_161749887183961"> <span class="grid_due_date {{task.due_on  | dateTimeMoment:'colorIndicator'}}">{{task.due_on|dateTimeMoment}}</span></a> <span data-ng-if="parentobj.projectID">
-                <span data-ng-show="!task.assignee" class="default-assignee-icon"><i class="icon-user icon-with-dot-circle"></i></span>
-                        <a class="thumb-sm avatar thumb-assignee" data-ng-if="task.assignee">
-                              <img data-ng-src="img/thumb/{{task.assignee}}.jpg">
-                          </a>
-                      </span>                      
-                </div>
-                <div data-ng-class="{'section':task.is_section}">&nbsp;</div>
-                </div>
-                
-               </td>
-
-              </tr>
-              </tbody>
-            </table>
+            <div class="row inbox-header" data-ng-if="parentobj.currentTab=='myInbox'">
+               <div class="col-sm-6">
+                  <span><a href="#" class="inbox-archive-all-button">Archive All </a></span>
+               </div>
+               <div class="col-sm-6 right-align">
+                  <span><a href="#" class="inbox-email-setting-menu">Email Notifications: On </a>
+               </div>
             </div>
-            </div>
-          </div>
-
-          <div class="row inbox-header" data-ng-if="parentobj.currentTab=='myInbox'">
-            <div class="col-sm-6">
-              <span><a href="#" class="inbox-archive-all-button">Archive All </a></span>
-            </div>
-            <div class="col-sm-6 right-align">
-            <span><a href="#" class="inbox-email-setting-menu">Email Notifications: On </a>
-            </div>
-          </div>          
-          
-          <div class="row no-margins inbox-holder" data-ng-if="parentobj.currentTab=='myInbox'">
-              <div class="col-xs-12">
-                  <div class="row row-eq-height inbox-thread-wrapper"  data-ng-repeat="inbox in parentobj.inbox" data-ng-click="inboxTaskView(inbox)" data-ng-class="{'currentInboxTask':inbox.taskDetails.task_id==parentobj.currentViewTaskID}" on-finish-render>          
-                      <div class="col-sm-11">
-                          <div class="inboxThreadView-threadGroup">
-                            <div class="inboxThreadView-typeHeader"><i class="icon-check"></i> <span class="inboxThreadView-typeName">Task</span></div>
-                            <div class="notification-header"><div class="notification-title"><span class="task-name">{{inbox.taskDetails.task_name}}</span></div></div>
-                            <div class="notifications" data-ng-repeat="unreadComment in inbox.unreadComments">
+            <div class="row no-margins inbox-holder" data-ng-if="parentobj.currentTab=='myInbox'">
+               <div class="col-xs-12">
+                  <div class="row row-eq-height inbox-thread-wrapper"  data-ng-repeat="inbox in parentobj.inbox" data-ng-click="inboxTaskView(inbox)" data-ng-class="{'currentInboxTask':inbox.taskDetails.task_id==parentobj.currentViewTaskID}" on-finish-render>
+                     <div class="col-sm-11">
+                        <div class="inboxThreadView-threadGroup">
+                           <div class="inboxThreadView-typeHeader"><i class="icon-check"></i> <span class="inboxThreadView-typeName">Task</span></div>
+                           <div class="notification-header">
+                              <div class="notification-title"><span class="task-name">{{inbox.taskDetails.task_name}}</span></div>
+                           </div>
+                           <div class="notifications" data-ng-repeat="unreadComment in inbox.unreadComments">
                               <span><a class="thumb-sm avatar thumb-sm-comment">
-                                  <img data-ng-src="img/thumb/{{unreadComment.user_id}}.jpg">
+                              <img data-ng-src="img/thumb/{{unreadComment.user_id}}.jpg">
                               </a> </span>
                               <span  class="conv-created-by" data-ng-bind="unreadComment.firstname"></span> <span class="conv-createdTimeStamp" ng-bind="unreadComment.created_at|convCreatedDateTime"></span>
                               <div class="commentStoryView-content">
-                                <div ng-bind-html="trustAsHtml(unreadComment.text)"></div>
+                                 <div ng-bind-html="trustAsHtml(unreadComment.text)"></div>
                               </div>
-                            </div>
-                          
-                          </div>
-                      </div>
-                      <div class="col-sm-1 archieve-button" data-ng-click="archieveInbox(inbox);$event.stopPropagation();">
-                          X
-                      </div>                       
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-sm-1 archieve-button" data-ng-click="archieveInbox(inbox);$event.stopPropagation();">
+                        X
+                     </div>
                   </div>
-              </div> 
-          </div>
-
-
-        </div>
+               </div>
+            </div>
+         </div>
       </div>
-
-    </div>
-
-
-    
-    <div class="col-sm-6" data-ng-show="parentobj.commentPanel">
-      <div class="panel panel-default task-holder-panel" data-ng-mouseover="convInitializing=false;">        
-        <div class="panel-body comments-panel-body">
-          <div class="row comments-panel-header">
-          
-            <div class="col-xs-4">
-             <div>
-             <div class="row assignee-row" data-ng-class="{'assignee-row-visible':assigneeOrgusersBoxStatus,'assignee-row-hover':!assigneeOrgusersBoxStatus,'unassigned-row':!parentobj.selectedAssignee}" ng-Mouseover="showDelete=true" ng-mouseleave="showDelete=false">
-               <div class="col-xs-3 assignee-col">
-                        <span data-ng-show="!parentobj.selectedAssignee" data-ng-click="enableOrgUsersBox()"><i class="icon-user icon-with-dot-circle" ></i> </span>
-                            <a class="thumb-sm avatar thumb-assignee" data-ng-show="parentobj.selectedAssignee" data-ng-click="enableOrgUsersBox()">
-                                    <img   data-ng-src="img/thumb/{{parentobj.selectedAssignee.user_id}}.jpg">
-                                </a>
-               </div>
-               <div class="col-xs-9 nopadding assignee-search-col">
-               <div class="name-of-assignee"  data-ng-show="!assigneeOrgusersBoxStatus"><div data-ng-click="enableOrgUsersBox()">{{parentobj.selectedAssignee?parentobj.selectedAssignee.firstname:'Unassigned'}}</div>
-               <span class="delete-assignee" data-ng-show="showDelete && parentobj.selectedAssignee" data-ng-click="unassignee()"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
-               </div>
-
-                <input type="text" ng-model="searchAssignee" class="form-control no-border field-no-padding" placeholder="{{parentobj.selectedAssignee?parentobj.selectedAssignee.firstname:'Search user...'}}" data-ng-click="enableOrgUsersBox()" data-ng-show="assigneeOrgusersBoxStatus"/>
-
-                </div>
-               </div>
-               
-                    <div class="assignee-orgusers-box" data-ng-show="org_users_filtered.length>0 && assigneeOrgusersBoxStatus">
+   </div>
+   <div class="col-sm-6" data-ng-show="parentobj.commentPanel">
+      <div class="panel panel-default task-holder-panel" data-ng-mouseover="convInitializing=false;">
+         <div class="panel-body comments-panel-body">
+            <div class="row comments-panel-header">
+               <div class="col-xs-4">
+                  <div>
+                     <div class="row assignee-row" data-ng-class="{'assignee-row-visible':assigneeOrgusersBoxStatus,'assignee-row-hover':!assigneeOrgusersBoxStatus,'unassigned-row':!parentobj.selectedAssignee}" ng-Mouseover="showDelete=true" ng-mouseleave="showDelete=false">
+                        <div class="col-xs-3 assignee-col">
+                           <span data-ng-show="!parentobj.selectedAssignee" data-ng-click="enableOrgUsersBox()"><i class="icon-user icon-with-dot-circle" ></i> </span>
+                           <a class="thumb-sm avatar thumb-assignee" data-ng-show="parentobj.selectedAssignee" data-ng-click="enableOrgUsersBox()">
+                           <img   data-ng-src="img/thumb/{{parentobj.selectedAssignee.user_id}}.jpg">
+                           </a>
+                        </div>
+                        <div class="col-xs-9 nopadding assignee-search-col">
+                           <div class="name-of-assignee"  data-ng-show="!assigneeOrgusersBoxStatus">
+                              <div data-ng-click="enableOrgUsersBox()">{{parentobj.selectedAssignee?parentobj.selectedAssignee.firstname:'Unassigned'}}</div>
+                              <span class="delete-assignee" data-ng-show="showDelete && parentobj.selectedAssignee" data-ng-click="unassignee()"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
+                           </div>
+                           <input type="text" ng-model="searchAssignee" class="form-control no-border field-no-padding" placeholder="{{parentobj.selectedAssignee?parentobj.selectedAssignee.firstname:'Search user...'}}" data-ng-click="enableOrgUsersBox()" data-ng-show="assigneeOrgusersBoxStatus"/>
+                        </div>
+                     </div>
+                     <div class="assignee-orgusers-box" data-ng-show="org_users_filtered.length>0 && assigneeOrgusersBoxStatus">
                         <div class="assignee-result-holder">
-                        <div class="assignee-result-row" data-ng-repeat="assignee in org_users_filtered=(org_users|filter:{firstname:searchAssignee})" data-ng-click="assignTo(assignee)">
-                            <div class="row">
-                                <div class="col-xs-3 assignee-result-thumb">
+                           <div class="assignee-result-row" data-ng-repeat="assignee in org_users_filtered=(org_users|filter:{firstname:searchAssignee})" data-ng-click="assignTo(assignee)">
+                              <div class="row">
+                                 <div class="col-xs-3 assignee-result-thumb">
                                     <a class="thumb-sm avatar thumb-sm-comment">
                                     <img   data-ng-src="img/thumb/{{assignee.user_id}}.jpg">
-                                </a>
-                                </div>
-                                <div class="col-xs-9">
+                                    </a>
+                                 </div>
+                                 <div class="col-xs-9">
                                     <div class="assignee-name">{{assignee.firstname}}</div>
                                     <div class="assignee-email">{{assignee.email}}</div>
-                                </div>                            
-                            </div>
-                        </div>
-
-                        </div>
-                    </div>
-             </div>
-             
-            </div>  
-            <div class="col-xs-4">     
-            
-            <div class="row assignee-row unassigned-row" data-ng-class="{'assignee-row-visible':opened,'assignee-row-hover':!opened}" ng-Mouseover="showDueDateDelete=true" ng-mouseleave="showDueDateDelete=false">
-                    <div class="col-xs-3 assignee-col">    <i class="icon-calendar icon-with-dot-circle" ng-click="open($event)"></i> </div>
-                    <div class="col-xs-9 nopadding assignee-search-col dueDatePicker">
-                       <span class="delete-dueDate" data-ng-click="removeDueDate()" data-ng-show="showDueDateDelete && dueDate"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
-                            <input type="text" class="form-control no-border" datepicker-popup="{{format}}" ng-model="dueDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  ng-click="open($event)" placeholder="Due Date"/>
-
-                      
-
-                    </div>
-            </div>
-
-                   
-        
-            
-            </div>
-            <div class="col-xs-4 panel-header-icons-row">
-             <span class="sub-task"><i class="glyphicon glyphicon-tasks"></i></span>
-             
-      <span class="attachment"><i class="glyphicon glyphicon-paperclip"></i>
-      <button ngf-select="uploadFiles($files, $invalidFiles)" multiple class="hidden-browser-button" data-ng-disabled="isUploadInProgress"></button> 
-      </span>
-      
-
-            <span class="comment-close-icon" data-ng-click="closeConversationPanel()">X</span>
-
-            </div>  
-          </div>
-          <div class="row">
-        <div class="col-md-12 task-conv-holder">                              
-
-          
-          <div class="row comments-top-buffer">
-              <div class="col-sm-12">
-
-                <span> <span data-ng-if="task.pro_id" class="comments-project-name">{{task.pro_name}}</span> <span data-ng-if="!task.pro_id">No project</span> </span>
-                <span data-ng-if="task.section_id!=null">{{task.section_name}}</span>
-
-              </div>
-
-            
-          </div>
-
-          <div class="row comments-top-buffer">
-              <div class="col-sm-12">                
-                <div class="row">
-                  <div class="col-xs-1">
-                  
-                    <i class="icon-check comment-icon-check" data-ng-click="markAsComplete(task,task.completed)" data-ng-class="{'completed-mark':task.completed==1}"></i>
-                  </div>
-                  <div class="col-xs-11 column-comment">
-                    <div class="form-group">
-                    <textarea class="msd-elastic form-control comment-panel-txtarea autogrow-textarea" data-ng-model="task.task_name" data-ng-keyup="syncToTaskPanel()" data-ng-blur="updateTaskName(task)" rows="1"></textarea>
-                    </div>
-                    <div class="form-group">
-                    <textarea class="msd-elastic form-control comment-panel-txtarea-description autogrow-textarea" rows="1" placeholder="Description" data-ng-model="task.task_description" data-ng-blur="updateTaskDescription(task)"></textarea>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </div>
-                  
-              <div class="col-sm-12 attach" data-ng-hide="attachments.length==0 && !files">
-
-                  <div ng-repeat="attach in attachments">
-                    <i class="glyphicon glyphicon-paperclip"></i> <span ng-Mouseover="attach.delete_attach=true"  ng-mouseleave="attach.delete_attach=false"> <a ng-href="{{serviceUrl}}download?assert_id={{attach.attach_id}}&token={{parentobj.token}}"  target="_blank">{{attach.original_name}}</a> <span class="delete_attach" data-ng-show="attach.delete_attach && attach.attach_id" data-ng-click="removeAttach(attach,'attachments')"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span> </span>
-
-                  </div>
-
-                  <div ng-repeat="f in files">
-                    <i class="glyphicon glyphicon-paperclip"></i> <span ng-Mouseover="attach.delete_attach=true"  ng-mouseleave="attach.delete_attach=false"><a ng-href="{{serviceUrl}}download?assert_id={{f.attach_id}}&token={{parentobj.token}}">{{f.name}}</a><span class="delete_attach" data-ng-show="attach.delete_attach&& f.attach_id" data-ng-click="removeAttach(f,'files')"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
-                    <div data-ng-hide="f.progress==100">
-                      <span class="progress" ng-show="f.progress >= 0">
-                        <div style="width:{{f.progress}}%"  
-                            ng-bind="f.progress + '%'"></div>
-                      </span>
-                    </div>
-                  </div>
-
-              </div>
-              
-        <div class="row">
-
-          <div class="col-xs-12 small-feed-story-group">
-            <div data-ng-repeat="log in activityLogs track by $index">
-            
-            <span class="feed-story-creator">{{log.logby}}</span> <span class="comment-text">{{log.act_name}}</span><span data-ng-show="log.act_id==1||log.act_id==5||log.act_id==6||log.act_id==7||log.act_id==10">.</span> <span ng-bind="log|storyaffected"></span> <span class="inline-timestamp" ng-bind="log.created_at|convCreatedDateTime"></span>
-            </div>
-          </div>  
-
-        </div>
-        <div class="row thread-row" data-ng-repeat="conv in coversation track by $index">
-              <div class="col-xs-1"> 
-                                   <a class="thumb-sm avatar thumb-sm-comment">
-                    <img src="img/a2.jpg" alt="...">
-                    </a>
-              </div>
-              <div class="col-xs-11">
-                    <div><span ng-bind="conv.firstname" class="conv-created-by"></span> <span ng-bind="conv.created_at|convCreatedDateTime" class="conv-createdTimeStamp"></span></div>
-                    <div ng-bind-html="trustAsHtml(conv.text)"></div>
-              </div>
-        </div>
-
-        </div>
-        </div>  
-
-<div class="row">
-
-        <div class="details_pane_footer" data-ng-class="{'pane-footer-top':followersbox}">
-
-              <div class="col-sm-12 dividerLine"> 
-                <div class="row">
-                    
-                    <div class="col-xs-2 comment-icon-column">
-                    <a class="thumb-sm avatar thumb-sm-comment">
-                    <img src="img/a2.jpg" alt="...">
-                    </a>
-                    </div>
-                    <div class="col-xs-10 comment-editor-holder" outside-click="minimizeCommentBox()" data-ng-click="maxCommentBox()">
-
-                              <div class="comment-editor-box" >
-                                <div ui-jq="wysiwyg" class="comment-editor conv-editor" data-ng-class="{'comment-editor-resize':commentBoxSizeStatus}">                          
-                              </div>  
-
-                              <div class="right-align comment-btn"><button type="submit" class="btn btn-sm btn-info" data-ng-click="postConv()">Comment</button></div>
-
+                                 </div>
                               </div>
-                    </div>
-                </div>
-              </div>
-
-           
-              <div class="col-sm-12 dividerLine"> 
-                
-                <table class="table followers-table">
-                <tbody>
-                  <tr>
-                    <td><span class="follow-col-left">Followers</span></td>
-                    <td class="follow-col-right">
-                    <div data-ng-show="!followersbox">   
-                    <a class="thumb-sm avatar thumb-sm-comment" data-ng-repeat="follow in data.followers">
-                    <img src="img/a2.jpg" alt="...">
-                    </a> 
-
-                    <span class="follower-plus" data-ng-click="addFollowers()"><i class="icon-plus add-follows"></i></span>
-                    </div>                    
-                    <div data-ng-show="followersbox" class="followersbox">
-                    <select chosen multiple options="org_users"
-                    ng-model="data.followers" ng-options="user.user_id as user.firstname for user in org_users">
-                    </select>
-                    </div>
-                    </td>
-                    <td>
-                    <span class="following">
-                    <i class="fa fa-bell"></i> <a href="javascript:void(0)" data-ng-click="unfollowTask()" data-ng-show="userFollowStatus">Following</a> <a href="javascript:void(0)" data-ng-click="followTask()" data-ng-show="!userFollowStatus">Follow task</a>
-                    </span>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-
-    
-
-              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-xs-4">
+                  <div class="row assignee-row unassigned-row" data-ng-class="{'assignee-row-visible':opened,'assignee-row-hover':!opened}" ng-Mouseover="showDueDateDelete=true" ng-mouseleave="showDueDateDelete=false">
+                     <div class="col-xs-3 assignee-col">    <i class="icon-calendar icon-with-dot-circle" ng-click="open($event)"></i> </div>
+                     <div class="col-xs-9 nopadding assignee-search-col dueDatePicker">
+                        <span class="delete-dueDate" data-ng-click="removeDueDate()" data-ng-show="showDueDateDelete && dueDate"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
+                        <input type="text" class="form-control no-border" datepicker-popup="{{format}}" ng-model="dueDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  ng-click="open($event)" placeholder="Due Date"/>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-xs-4 panel-header-icons-row">
+                  <span class="sub-task" data-ng-click="addSubtask()"><i class="glyphicon glyphicon-tasks"></i></span>
+                  <span class="attachment"><i class="glyphicon glyphicon-paperclip"></i>
+                  <button ngf-select="uploadFiles($files, $invalidFiles)" multiple class="hidden-browser-button" data-ng-disabled="isUploadInProgress"></button> 
+                  </span>
+                  <span class="comment-close-icon" data-ng-click="closeConversationPanel()">X</span>
+               </div>
             </div>
-      </div>     
+            <div class="row">
+               <div class="col-md-12 task-conv-holder">
+                  <div class="row comments-top-buffer">
+                     <div class="col-sm-12">
+                        <span> <span data-ng-if="task.pro_id" class="comments-project-name">{{task.pro_name}}</span> <span data-ng-if="!task.pro_id">No project</span> </span>
+                        <span data-ng-if="task.section_id!=null">{{task.section_name}}</span>
+                     </div>
+                  </div>
+                  <div class="row comments-top-buffer" data-ng-show="task.parent_id!=0">
+                     <div class="col-sm-12">
+                     <span data-ng-repeat="taskParent in subTaskParentDetails |orderBy:'task_id':false">                     
+                        <span data-ng-click="openParentTask(taskParent)">{{taskParent.task_name}} <i class="fa fa-angle-right"></i> </span>
 
+                     </span>
+                     
 
-        </div>
+                     </div>
+                  </div>
+                  <div class="row comments-top-buffer">
+                     <div class="col-sm-12">
+                        <div class="row">
+                           <div class="col-xs-1">
+                              <i class="icon-check comment-icon-check" data-ng-click="markAsComplete(task,task.completed)" data-ng-class="{'completed-mark':task.completed==1}"></i>
+                           </div>
+                           <div class="col-xs-11 column-comment">
+                              <div class="form-group">
+                                 <textarea class="msd-elastic form-control comment-panel-txtarea autogrow-textarea" data-ng-model="task.task_name" data-ng-keyup="syncToTaskPanel()" data-ng-blur="updateTaskName(task)" rows="1"></textarea>
+                              </div>
+                              <div class="form-group">
+                                 <textarea class="msd-elastic form-control comment-panel-txtarea-description autogrow-textarea" rows="1" placeholder="Description" data-ng-model="task.task_description" data-ng-blur="updateTaskDescription(task)"></textarea>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="row comments-top-buffer">
+                     <div class="col-xs-12">
+                  <table class="task-table" id="grid">
+                        <tbody ui-sortable="sortableOptions" ng-model="subtasks">
+                           <tr class="current" data-ng-repeat="task in subtasks track by task.task_id" class="priority task-row new_tasks_group grid-row-selected in-assigned-to-me-new-task taskRow--willCollapse" ng-mouseover="task.showDragDrop=true" ng-mouseleave="task.showDragDrop=false" data-ng-class="{'grid-row-task-selected':task.task_id==parentobj.currentViewTaskID,'grid-row-non-selected':task.task_id!=parentobj.currentViewTaskID}">
+                              <td class="td-reorder myHandle">
+                                 <span class="dragDrop"><i class="glyphicon glyphicon-th drag-drop-icon"  data-ng-class="{'drag-drop-icon-active':task.showDragDrop}"></i></span>
+                              </td>
+                              <td class="td-check" data-ng-click="completed(task,$index,task.completed,'true')"><i class="icon-check checkmark" data-ng-class="{'completed-mark':task.completed==1}"></i></td>
+                              <td >
+                                 <div class="section-container" data-ng-show="task.is_section && task.task_id!=parentobj.currentViewTaskID">
+                                    <div data-ng-class="{'section':task.is_section}">&nbsp;</div>
+                                 </div>
+                                 <div class="gridCell-stringContainer" data-ng-class="{'section':task.is_section}">
+                                    <input type="text" class="task-input-field" data-ng-model="task.task_name" name="taskname"  data-ng-blur="updateTaskName(task)"/>
+                                    <div class="task-row-overlay grid-tags-and-date" data-ng-hide="task.is_section">
+                                       <a class="itemRowView-potToken potColor-background--NONE" href="#" id="luna6" data-ng-if="!parentobj.projectID && task.project_id">{{task.pro_name}}</a><a id="centerpane_row__due_date__SPECIAL_GROUP_NEW_161749887183961"> <span class="grid_due_date {{task.due_on  | dateTimeMoment:'colorIndicator'}}">{{task.due_on|dateTimeMoment}}</span></a> <span data-ng-if="parentobj.projectID">
+                                       <span data-ng-show="!task.assignee" class="default-assignee-icon"><i class="icon-user icon-with-dot-circle"></i></span>
+                                       <a class="thumb-sm avatar thumb-assignee" data-ng-if="task.assignee">
+                                       <img data-ng-src="img/thumb/{{task.assignee}}.jpg">
+                                       </a>
+                                       </span>
+                                       <span class="sub-comment-with-angle" data-ng-click="openSubTask(task)">
+                                       <i class="fa fa-comment-o"></i> 
+                                       <i class="fa fa-angle-right"></i> 
+                                       </span>
+                                                            
+                                    </div>
+                                    <div data-ng-class="{'section':task.is_section}">&nbsp;</div>
+                                 </div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                     </div>
+                  </div>
+
+                  <div class="col-sm-12 attach" data-ng-hide="attachments.length==0 && !files">
+                     <div ng-repeat="attach in attachments">
+                        <i class="glyphicon glyphicon-paperclip"></i> <span ng-Mouseover="attach.delete_attach=true"  ng-mouseleave="attach.delete_attach=false"> <a ng-href="{{serviceUrl}}download?assert_id={{attach.attach_id}}&token={{parentobj.token}}"  target="_blank">{{attach.original_name}}</a> <span class="delete_attach" data-ng-show="attach.delete_attach && attach.attach_id" data-ng-click="removeAttach(attach,'attachments')"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span> </span>
+                     </div>
+                     <div ng-repeat="f in files">
+                        <i class="glyphicon glyphicon-paperclip"></i> <span ng-Mouseover="attach.delete_attach=true"  ng-mouseleave="attach.delete_attach=false"><a ng-href="{{serviceUrl}}download?assert_id={{f.attach_id}}&token={{parentobj.token}}">{{f.name}}</a><span class="delete_attach" data-ng-show="attach.delete_attach&& f.attach_id" data-ng-click="removeAttach(f,'files')"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
+                        <div data-ng-hide="f.progress==100">
+                           <span class="progress" ng-show="f.progress >= 0">
+                              <div style="width:{{f.progress}}%"  
+                                 ng-bind="f.progress + '%'"></div>
+                           </span>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-xs-12 small-feed-story-group">
+                        <div data-ng-repeat="log in activityLogs track by $index">
+                           <span class="feed-story-creator">{{log.logby}}</span> <span class="comment-text">{{log.act_name}}</span><span data-ng-show="log.act_id==1||log.act_id==5||log.act_id==6||log.act_id==7||log.act_id==10">.</span> <span ng-bind="log|storyaffected"></span> <span class="inline-timestamp" ng-bind="log.created_at|convCreatedDateTime"></span>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row thread-row" data-ng-repeat="conv in coversation track by $index">
+                     <div class="col-xs-1"> 
+                        <a class="thumb-sm avatar thumb-sm-comment">
+                        <img src="img/a2.jpg" alt="...">
+                        </a>
+                     </div>
+                     <div class="col-xs-11">
+                        <div><span ng-bind="conv.firstname" class="conv-created-by"></span> <span ng-bind="conv.created_at|convCreatedDateTime" class="conv-createdTimeStamp"></span></div>
+                        <div ng-bind-html="trustAsHtml(conv.text)"></div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="details_pane_footer" data-ng-class="{'pane-footer-top':followersbox}">
+                  <div class="col-sm-12 dividerLine">
+                     <div class="row">
+                        <div class="col-xs-2 comment-icon-column">
+                           <a class="thumb-sm avatar thumb-sm-comment">
+                           <img src="img/a2.jpg" alt="...">
+                           </a>
+                        </div>
+                        <div class="col-xs-10 comment-editor-holder" outside-click="minimizeCommentBox()" data-ng-click="maxCommentBox()">
+                           <div class="comment-editor-box" >
+                              <div ui-jq="wysiwyg" class="comment-editor conv-editor" data-ng-class="{'comment-editor-resize':commentBoxSizeStatus}">                          
+                              </div>
+                              <div class="right-align comment-btn"><button type="submit" class="btn btn-sm btn-info" data-ng-click="postConv()">Comment</button></div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-12 dividerLine">
+                     <table class="table followers-table">
+                        <tbody>
+                           <tr>
+                              <td><span class="follow-col-left">Followers</span></td>
+                              <td class="follow-col-right">
+                                 <div data-ng-show="!followersbox">   
+                                    <a class="thumb-sm avatar thumb-sm-comment" data-ng-repeat="follow in data.followers">
+                                    <img src="img/a2.jpg" alt="...">
+                                    </a> 
+                                    <span class="follower-plus" data-ng-click="addFollowers()"><i class="icon-plus add-follows"></i></span>
+                                 </div>
+                                 <div data-ng-show="followersbox" class="followersbox">
+                                    <select chosen multiple options="org_users"
+                                       ng-model="data.followers" ng-options="user.user_id as user.firstname for user in org_users">
+                                    </select>
+                                 </div>
+                              </td>
+                              <td>
+                                 <span class="following">
+                                 <i class="fa fa-bell"></i> <a href="javascript:void(0)" data-ng-click="unfollowTask()" data-ng-show="userFollowStatus">Following</a> <a href="javascript:void(0)" data-ng-click="followTask()" data-ng-show="!userFollowStatus">Follow task</a>
+                                 </span>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-  </div>
+   </div>
+</div>

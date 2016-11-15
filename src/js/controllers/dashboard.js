@@ -120,6 +120,8 @@ socket.on('connect', function (data) {
             $scope.coversation = response.data.coversation;
             $scope.attachments = response.data.attachments;
             $scope.activityLogs = response.data.activityLogs;
+            $scope.subtasks=response.data.subtasks;
+            $scope.subTaskParentDetails=response.data.subtaskParents;
             $scope.data.followers = [];
             $.grep(response.data.followers, function(item) {
                 $scope.data.followers.push(item.user_id);
@@ -568,10 +570,9 @@ $scope.$watch('dueDate', function(newValue, oldvalue) {
 },true);
 
 $scope.removeDueDate=function(){
-
-$scope.currentTask.task.due_on="";
-$scope.dueDate="";
+$scope.currentTask.task.due_on=null;
 $scope.isDueDateRemoved=true;
+$scope.clear();
 }
 
 $scope.uploadFiles = function(files, errFiles) {
@@ -653,16 +654,24 @@ $scope.removeAttach=function(attachment,removeFrom){
 
 }
 
-$scope.completed=function(currentObj,position,taskStatus){
+$scope.completed=function(currentObj,position,taskStatus,isSubTask){
 
-    $scope.parentobj.tasks.splice(position,1);
-    if(taskStatus==0)
-    {
+    if(taskStatus==0){
         taskStatus=1;
     }
-    else
-    {
+    else{
       taskStatus=0;  
+    }
+    if(typeof isSubTask!='undefined' && isSubTask=='true'){
+        console.log("here");
+        currentObj.completed=taskStatus;
+    }
+    else{
+         $scope.parentobj.tasks.splice(position,1);
+        if(typeof $scope.currentTask!="undefined"){
+            $scope.currentTask.task.completed=taskStatus;
+        }
+
     }
 
     var data = $.param({
@@ -670,12 +679,7 @@ $scope.completed=function(currentObj,position,taskStatus){
         taskID: currentObj.task_id,
         taskStatus:taskStatus,
         projectID:currentObj.project_id
-    });        
-
-    if(typeof $scope.currentTask!="undefined")
-    {
-        $scope.currentTask.task.completed=taskStatus;
-    }    
+    });
 
     $http.post(domain + 'updateTaskStatus', data).then(function(response) {
             if(!response.data.success){
@@ -804,5 +808,61 @@ socket.on("updateInbox",function(data){
     }
 
 });
+
+    $scope.openSubTask=function(subTaskObj){
+        var obj={"task":subTaskObj};        
+        if($('.task_'+subTaskObj.task_id).length>0){
+        $timeout(function(){
+            $('.task_'+subTaskObj.task_id).trigger('click');
+        },0);
+
+        }
+        else {
+            $scope.viewTask(obj,obj,0);
+        }
+
+    }
+
+    $scope.openParentTask=function(taskParent){
+        var obj={"task":taskParent};
+        if($('.task_'+taskParent.task_id).length>0){
+        $timeout(function(){
+            $('.task_'+taskParent.task_id).trigger('click');
+        },0);
+
+        }
+        else {
+            $scope.viewTask(obj,obj,0);
+        }
+
+        
+    }
+
+    $scope.addSubtask=function(){
+        
+        var data = $.param({
+            token: sessionStorage.getItem("token"),
+            task_name: '',
+            task_description: '',
+            projectID: $scope.parentobj.projectID,
+            currentTab: '',
+            isSection: 0,
+            parent_id:$scope.currentTask.task.task_id
+        });
+
+        $http.post(domain + 'createTask', data).then(function(response) {
+
+            if(!response.data.success){
+              $state.go('access.signin', {});
+            }
+            var position=$scope.subtasks.length;
+            $scope.subtasks.splice(position, 0, response.data.task[0]);
+
+        },function(){          
+          $state.go('access.signin', {});
+        });
+
+    }
+
 
 }]);

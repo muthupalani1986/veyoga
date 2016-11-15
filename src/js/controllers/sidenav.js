@@ -133,6 +133,11 @@ $scope.setTeamValue=function(team){
 }
 
 
+$scope.addUser = function () {  
+  var modalInstance = $modal.open({templateUrl: 'tpl/popups/new_user.html',controller:'popupNewUser'});
+}
+
+
   }]);
 
 

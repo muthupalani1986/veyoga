@@ -33,6 +33,10 @@ angular.module('app')
 		    return !isWithinAWeek(momentDate);
 		}
 
+		if(due_on==""||due_on==null){
+			return;
+		}
+		
 		if(isToday(moment(due_on))){
 			if(returnClass)
 			{

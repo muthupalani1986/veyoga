@@ -6901,4 +6901,9 @@ tr.grid-row-non-selected td
 .has-error{
   border-color:#FF0000; 
 }
-
+.sub-comment-with-angle{
+  color:#cfdadd;
+  font-size:15px;
+  cursor: pointer;
+  padding-left: 6px;
+}
