@@ -6914,3 +6914,37 @@ tr.grid-row-non-selected td
   cursor: pointer;
   padding-left: 6px;
 }
+
+.circularToggleButtonView--toggledOn .circularToggleButtonView-button{
+  border-color: #3BE8B0;
+    background-color: #3BE8B0;
+    color: #fff;
+    fill: #fff;
+}
+.circularButtonView
+{
+  -webkit-box-align:center;
+  align-items:center;
+  border-radius:50%;
+  -webkit-box-sizing:border-box;
+  display:inline-flex;
+  flex-shrink:0;
+  -webkit-box-pack:center;
+  justify-content:center;
+  width: 30px;
+  height: 30px;
+}
+.circularButtonView--xsmall
+{
+  width: 20px;
+  height: 20px;
+}
+.circularButtonView--xsmall .svgIcon{
+  width: 12px;
+  height: 12px;
+}
+.circularButtonView--xsmall .circularButtonView-label
+{
+  width: 12px;
+  height: 12px;
+}

@@ -34,6 +34,7 @@ angular.module('app')
         link: function (scope, element, attr) {
                 $timeout(function () {                   
                    $('.navi').css('height', $(window).innerHeight());
+                   Scrollbar.initAll();
                 },100);
             
         }

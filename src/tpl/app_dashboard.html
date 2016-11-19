@@ -23,7 +23,10 @@
                               <td class="td-reorder myHandle">
                                  <span class="dragDrop"><i class="glyphicon glyphicon-th drag-drop-icon"  data-ng-class="{'drag-drop-icon-active':task.showDragDrop}"></i></span>
                               </td>
-                              <td class="td-check" data-ng-click="completed(task,$index,task.completed)"><i class="icon-check checkmark" data-ng-class="{'completed-mark':task.completed==1}"></i></td>
+                              <td class="td-check" data-ng-click="completed(task,$index,task.completed)">
+                              <icon-task-checkbox data-ng-if="task.completed=='0'"></icon-task-checkbox>
+                              <icon-task-checkbox-completed data-ng-if="task.completed=='1'"></icon-task-checkbox-completed>
+                              </td>
                               <td >
                                  <div class="section-container" data-ng-show="task.is_section && task.task_id!=parentobj.currentViewTaskID">
                                     <div data-ng-class="{'section':task.is_section}">&nbsp;</div>
@@ -137,9 +140,8 @@
                   </div>
                </div>
                <div class="col-xs-4 panel-header-icons-row">
-                  <span class="sub-task" data-ng-click="addSubtask()"><i class="glyphicon glyphicon-tasks"></i></span>
-                  <span class="attachment"><i class="glyphicon glyphicon-paperclip"></i>
-                  <button ngf-select="uploadFiles($files, $invalidFiles)" multiple class="hidden-browser-button" data-ng-disabled="isUploadInProgress"></button> 
+                  <span data-ng-click="addSubtask()"><icon-subtask></icon-subtask></span>
+                  <span><icon-attachment ngf-select="uploadFiles($files, $invalidFiles)" multiple data-ng-disabled="isUploadInProgress"></icon-attachment>
                   </span>
                   <span class="comment-close-icon" data-ng-click="closeConversationPanel()">X</span>
                </div>
@@ -166,7 +168,9 @@
                      <div class="col-sm-12">
                         <div class="row">
                            <div class="col-xs-1">
-                              <i class="icon-check comment-icon-check" data-ng-click="markAsComplete(task,task.completed)" data-ng-class="{'completed-mark':task.completed==1}"></i>
+                              <!--<i class="icon-check comment-icon-check" data-ng-click="markAsComplete(task,task.completed)" data-ng-class="{'completed-mark':task.completed==1}"></i>-->
+                              <icon-task-completed-check-mark task-status="{{task.completed}}" data-ng-click="markAsComplete(task,task.completed)" ></icon-task-completed-check-mark>
+
                            </div>
                            <div class="col-xs-11 column-comment">
                               <div class="form-group">
@@ -188,7 +192,10 @@
                               <td class="td-reorder myHandle">
                                  <span class="dragDrop"><i class="glyphicon glyphicon-th drag-drop-icon"  data-ng-class="{'drag-drop-icon-active':task.showDragDrop}"></i></span>
                               </td>
-                              <td class="td-check" data-ng-click="completed(task,$index,task.completed,'true')"><i class="icon-check checkmark" data-ng-class="{'completed-mark':task.completed==1}"></i></td>
+                              <td class="td-check" data-ng-click="completed(task,$index,task.completed,'true')">
+                              <icon-task-checkbox data-ng-if="task.completed=='0'"></icon-task-checkbox>
+                              <icon-task-checkbox-completed data-ng-if="task.completed=='1'"></icon-task-checkbox-completed>
+                              </td>
                               <td >
                                  <div class="section-container" data-ng-show="task.is_section && task.task_id!=parentobj.currentViewTaskID">
                                     <div data-ng-class="{'section':task.is_section}">&nbsp;</div>
