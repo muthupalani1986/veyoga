@@ -138,6 +138,24 @@ $scope.addUser = function () {
 }
 
 
+$scope.projectMenuDropDown=function($event,snavpro,teamProject){
+      $event.stopPropagation();
+      $event.preventDefault();
+      $scope.parentobj.sideNaviProjectMenuDropDown=!snavpro.sideNaviProjectMenuDropDownStatus;
+      $scope.parentobj.sideNaviProjectMenuDropDownTopPos=$event.clientY;
+    $.grep(teamProject,function(item){
+        if(item.pro_id==snavpro.pro_id){
+          item.sideNaviProjectMenuDropDownStatus=!item.sideNaviProjectMenuDropDownStatus;
+        }
+        else{
+          item.sideNaviProjectMenuDropDownStatus=false;
+        }
+        return;
+      });
+
+
+}
+
   }]);
 
 

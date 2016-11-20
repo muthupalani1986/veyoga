@@ -27,4 +27,14 @@ angular.module('app').directive('iconTaskCheckbox', function() {
 			restrict: 'E',
 			templateUrl:'tpl/icons/icon-attachment.html'
 		}
+  }).directive('iconMoreActionsPanel', function() {
+	return {
+			restrict: 'E',
+			templateUrl:'tpl/icons/icon-moreActionsCommentPanel.html'
+		}
+  }).directive('iconMore', function() {
+	return {
+			restrict: 'E',
+			templateUrl:'tpl/icons/iconMore.html'
+		}
   });

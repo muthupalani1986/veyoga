@@ -3087,10 +3087,8 @@ fieldset[disabled] .i-checks input + i:before {
 }
 
 .bg-black .nav > li.active > a {
- 
-  background-color: #131e26;
-
-  color: #fff;
+    background-color: #131e26;
+    color: #fff;
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
     box-flex: 1;
@@ -3101,7 +3099,7 @@ fieldset[disabled] .i-checks input + i:before {
     font-size: 14px;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+   /* white-space: nowrap;*/
 
 }
 
@@ -5226,6 +5224,7 @@ a.text-#000000:hover {
   font-size: 18px;
   font-weight: normal;
   color: gray;
+  position: relative;
 }
 .comments-panel-header .icon-txt
 {
@@ -6947,4 +6946,33 @@ tr.grid-row-non-selected td
 {
   width: 12px;
   height: 12px;
+}
+.dropdown-more-actions .dropdown-menu
+{
+  top: 80%;
+  right: 64px;
+  left: auto;
+}
+.side-navi-project-more-actions .dropdown-menu{  
+  right: auto;
+  left: 190px;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  color: #fff !important;
+  text-decoration: none;
+  background-color: #1AAFD0 !important;
+}
+.navigationDockItemView-moreIcon{
+  cursor: pointer;
+  fill: #fff;
+}
+.navigation-doc-item-menu
+{
+  float: right;
+}
+.side-nav-container
+{
+  overflow: auto;
 }

@@ -19,14 +19,26 @@
         </a>
       </li>
       <li><div class="new-project-row"><span class="new-project-text">PROJECTS</span> <div class="new-project-icon-column"><i class="icon-plus add-follows" data-ng-click="newProPopup(snav.team)"></i></div></div></li>
+
       <li  data-ng-repeat="snavpro in snav.team.projects" data-ng-class="{'active':parentobj.currentProjectID==snavpro.pro_id}" on-finish-render>
-        <a ui-sref="app.dashboard" data-ng-click="getTasks(snavpro)" data-ng-class="{'current-project':parentobj.currentProjectID==snavpro.pro_id}">
-          <span>{{snavpro.pro_name}}</span>
+        <a ui-sref="app.dashboard" data-ng-click="getTasks(snavpro)" data-ng-class="{'current-project':parentobj.currentProjectID==snavpro.pro_id}" ng-mouseover="snavpro.iconMore=true" ng-mouseleave="snavpro.iconMore=false">
+          <span>{{snavpro.pro_name|limitTo:20}}<span data-ng-if="snavpro.pro_name.length>20">..</span></span>
+          <span data-ng-show="snavpro.iconMore"><icon-more data-ng-click="projectMenuDropDown($event,snavpro,snav.team.projects)"></icon-more></span>
         </a>
       </li>
     </ul>
   </li>
 
+<div class="side-navi-project-more-actions" data-ng-class="{'open':parentobj.sideNaviProjectMenuDropDown==true}">
+     <ul class="dropdown-menu" ng-style="{top: parentobj.sideNaviProjectMenuDropDownTopPos}">
+       <li><a href="javascript:void(0)">Copy Project</a></li>
+       <li><a href="javascript:void(0)">Archive Project</a></li>
+       <li><a href="javascript:void(0)">Delete Project</a></li>
+     </ul>
+  </div>
+
 </ul>
 <!-- / list -->
+
+
 

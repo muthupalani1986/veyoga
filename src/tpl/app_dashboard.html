@@ -143,9 +143,19 @@
                   <span data-ng-click="addSubtask()"><icon-subtask></icon-subtask></span>
                   <span><icon-attachment ngf-select="uploadFiles($files, $invalidFiles)" multiple data-ng-disabled="isUploadInProgress"></icon-attachment>
                   </span>
+                  <icon-more-actions-panel data-ng-click="moreActionMenu()"></icon-more-actions-panel>
                   <span class="comment-close-icon" data-ng-click="closeConversationPanel()">X</span>
                </div>
+
+               <div class="dropdown-more-actions" data-ng-class="{'open':parentobj.moreActionsMenuStatus==true}">
+                 <ul class="dropdown-menu">
+                   <li><a href="javascript:void(0)">Delete Task</a></li>
+                   <li><a href="javascript:void(0)">Copy Task</a></li>
+                 </ul>
+               </div>
+
             </div>
+
             <div class="row">
                <div class="col-md-12 task-conv-holder">
                   <div class="row comments-top-buffer">
@@ -229,7 +239,7 @@
                         <i class="glyphicon glyphicon-paperclip"></i> <span ng-Mouseover="attach.delete_attach=true"  ng-mouseleave="attach.delete_attach=false"> <a ng-href="{{serviceUrl}}download?assert_id={{attach.attach_id}}&token={{parentobj.token}}"  target="_blank">{{attach.original_name}}</a> <span class="delete_attach" data-ng-show="attach.delete_attach && attach.attach_id" data-ng-click="removeAttach(attach,'attachments')"><i class="glyphicon glyphicon-remove-circle remove-icon-attach"></i></span> </span>
                      </div>
                      <div ng-repeat="f in files">
-                        <i class="glyphicon glyphicon-paperclip"></i> <span ng-Mouseover="attach.delete_attach=true"  ng-mouseleave="attach.delete_attach=false"><a ng-href="{{serviceUrl}}download?assert_id={{f.attach_id}}&token={{parentobj.token}}">{{f.name}}</a><span class="delete_attach" data-ng-show="attach.delete_attach&& f.attach_id" data-ng-click="removeAttach(f,'files')"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
+                        <i class="glyphicon glyphicon-paperclip"></i> <span ng-Mouseover="attach.delete_attach=true"  ng-mouseleave="attach.delete_attach=false"><a ng-href="{{serviceUrl}}download?assert_id={{f.attach_id}}&token={{parentobj.token}}">{{f.name}}</a> <span class="delete_attach" data-ng-show="attach.delete_attach&& f.attach_id" data-ng-click="removeAttach(f,'files')"><i class="glyphicon glyphicon-remove-circle remove-icon-attach"></i></span>
                         <div data-ng-hide="f.progress==100">
                            <span class="progress" ng-show="f.progress >= 0">
                               <div style="width:{{f.progress}}%"  

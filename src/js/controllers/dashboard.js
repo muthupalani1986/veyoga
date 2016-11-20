@@ -9,7 +9,7 @@ socket.on('connect', function (data) {
 
     $scope.currentTask;
     $scope.serviceUrl=domain;
-    $scope.parentobj.token=sessionStorage.getItem("token");
+    $scope.parentobj.token=sessionStorage.getItem("token");    
     var datefilter = $filter('date');
     $scope.addTask = function(isSection) {        
         var is_section;
@@ -438,8 +438,17 @@ socket.on('connect', function (data) {
                         $scope.assigneeOrgusersBoxStatus=false;                        
                 });
         }
+        
+        if(!$(e.target).parents().hasClass('moredropdown-actions-icon')){
+           $scope.$apply(function() {
+            $scope.parentobj.moreActionsMenuStatus=false; 
+           });             
+        }
 
-
+        $scope.$apply(function() {
+            
+            $scope.parentobj.sideNaviProjectMenuDropDown=false;    
+        });        
 
     });
 
@@ -885,6 +894,10 @@ socket.on("updateInbox",function(data){
         });
 
     }
+
+$scope.moreActionMenu=function(){
+    $scope.parentobj.moreActionsMenuStatus=!$scope.parentobj.moreActionsMenuStatus;
+}
 
 
 }]);
