@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('sidenav', ['$scope', '$http', '$state','domain','$sce','$rootScope','socket', '$modal','$localStorage','$sessionStorage',function($scope, $http, $state,domain,$sce,$rootScope,socket,$modal,$localStorage,$sessionStorage) {
+app.controller('sidenav', ['$scope', '$http', '$state','domain','$sce','$rootScope','socket', '$modal','$localStorage','$sessionStorage','$timeout',function($scope, $http, $state,domain,$sce,$rootScope,socket,$modal,$localStorage,$sessionStorage,$timeout) {
  $scope.parentobj = {};
 $scope.parentobj.currentTab='myTasks';
 $scope.parentobj.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
@@ -33,7 +33,11 @@ $http.post(domain+'myTasks',data).then(function(response){
   if(!response.data.success){
       $state.go('access.signin', {});
     }
+    $timeout(function () {
+      setHeight();
+    },100);
 
+    
 },function(){          
           $state.go('access.signin', {});
         });
@@ -57,7 +61,9 @@ $scope.getTasks=function(projectDetails){
         if(!response.data.success){
           $state.go('access.signin', {});
         }
-
+      $timeout(function () {
+            setHeight();
+          },100);
         },function(){          
           $state.go('access.signin', {});
         });
@@ -77,7 +83,9 @@ $scope.myInbox=function(){
 var data=$.param({token:sessionStorage.getItem("token")});
   $http.post(domain+'myInbox',data).then(function(response){
   $scope.parentobj.inbox=response.data.inbox.inbox;
-  setHeight();
+    $timeout(function () {
+      setHeight();
+    },100);
   if(!response.data.success){
   $state.go('access.signin', {});
   }
@@ -99,8 +107,9 @@ $scope.resetActions=function(){
 function setHeight() {
         var windowHeight = $(window).innerHeight() - 80;
         $('.task-holder-panel').css('height', windowHeight);
-        $('.inbox-holder').css('height', windowHeight - 80);        
+        $('.task-holder').css('height', windowHeight - 80);        
         $('.task-conv-holder').css('height', windowHeight - 220);
+        $('.navi').css('height', $(window).innerHeight()); 
     };
     
     $(window).resize(function() {

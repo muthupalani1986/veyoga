@@ -233,4 +233,41 @@ angular.module('app')
   		return '';
   	}
 
+  }).filter('taskRepeatText', function() {
+  	return function(parentobj){
+  		var prefixText="Repeats ";
+	  	if(parentobj.selectedTaskRepeatType.id==1){
+	  		return prefixText + 'Daily';
+	  	}
+	  	if(parentobj.selectedTaskRepeatType.id==2){
+	  		return prefixText + parentobj.selectedPeriodicInterval.label+' days after completion';
+	  	}
+	  	if(parentobj.selectedTaskRepeatType.id==3){
+	  		var weekText;
+	  		var weekDays={"0":"Sunday","1":"Monday","2":"Tuesday","3":"Wednesday","4":"Thursday","5":"Friday","6":"Saturday"};
+	  		if(parentobj.selectedWeeklyInterval.id>1){
+	  			weekText=' every '+parentobj.selectedWeeklyInterval.label+' weeks';
+	  		}
+	  		else{
+	  			weekText='weekly';
+	  		}
+	  		return prefixText + weekText+' on '+weekDays[parentobj.selectedWeeklyOn.id];
+	  	}
+
+	  	if(parentobj.selectedTaskRepeatType.id==4){
+
+			if(parentobj.selectedMonthlyInterval.id>1){
+				return prefixText + 'every '+parentobj.selectedMonthlyInterval.label+' months on the '+parentobj.selectedMonthlyOn.label+' day of the month';
+			}
+			else{
+				return prefixText + 'Monthly on the '+parentobj.selectedMonthlyOn.label+' day of the month';
+			}
+	  		
+
+	  	}
+	  	if(parentobj.selectedTaskRepeatType.id==5){
+	  		return prefixText +'Yearly';
+	  	}
+  	}
+
   });

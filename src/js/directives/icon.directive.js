@@ -37,4 +37,14 @@ angular.module('app').directive('iconTaskCheckbox', function() {
 			restrict: 'E',
 			templateUrl:'tpl/icons/iconMore.html'
 		}
+  }).directive('iconTaskRepeat', function() {
+	return {
+			restrict: 'E',
+			templateUrl:'tpl/icons/iconTaskRepeat.html'
+		}
+  }).directive('iconRepeatRecurrenceView', function() {
+	return {
+			restrict: 'E',
+			templateUrl:'tpl/icons/icon-repeatRecurrenceView.html'
+		}
   });

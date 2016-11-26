@@ -134,8 +134,42 @@
                   <div class="row assignee-row unassigned-row" data-ng-class="{'assignee-row-visible':opened,'assignee-row-hover':!opened}" ng-Mouseover="showDueDateDelete=true" ng-mouseleave="showDueDateDelete=false">
                      <div class="col-xs-3 assignee-col">    <i class="icon-calendar icon-with-dot-circle" ng-click="open($event)"></i> </div>
                      <div class="col-xs-9 nopadding assignee-search-col dueDatePicker">
-                        <span class="delete-dueDate" data-ng-click="removeDueDate()" data-ng-show="showDueDateDelete && dueDate"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
-                        <input type="text" class="form-control no-border" datepicker-popup="{{format}}" ng-model="dueDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  ng-click="open($event)" placeholder="Due Date"/>
+                        <span class="delete-dueDate" data-ng-click="removeDueDate()" data-ng-show="showDueDateDelete && dueDate && !opened"><i class="glyphicon glyphicon-remove-circle remove-icon"></i></span>
+                        <icon-repeat-recurrence-view class="duedateTaskRepeat" data-ng-hide="showDueDateDelete||opened||parentobj.selectedTaskRepeatType.id==0"></icon-repeat-recurrence-view>
+                        <input type="text" class="form-control no-border" datepicker-popup="{{format}}" ng-model="dueDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  ng-click="open($event);openTaskRepeatPanel();" placeholder="Due Date"/>
+                        <div class="task-repeat-container" data-ng-click="open($event);" data-ng-show="parentobj.taskRepeatContainer">
+                        <a href="javascript:void(0)" data-ng-click="setTaskRepeat()" data-ng-show="!parentobj.showTaskRepeatField && parentobj.selectedTaskRepeatType.id==0">Set to repeat</a>
+                        <a href="javascript:void(0)" data-ng-click="setTaskRepeat()" data-ng-show="!parentobj.showTaskRepeatField && parentobj.selectedTaskRepeatType.id!=0"> <icon-repeat-recurrence-view class="RecurrenceView"></icon-repeat-recurrence-view> {{parentobj|taskRepeatText}}</a>
+
+                     <div class="form-horizontal" data-ng-show="parentobj.showTaskRepeatField">
+                        <div class="form-group">
+                           <label class="col-sm-3" for="repeattype">REPEAT</label>
+                           <div class="col-sm-9">
+                                 <select ng-options="item as item.label for item in parentobj.taskRepeatTypes track by item.id" ng-model="parentobj.selectedTaskRepeatType"></select>
+                           </div>                           
+                        </div>
+                        <div class="form-group" data-ng-show="parentobj.selectedTaskRepeatType.id!=0 && parentobj.selectedTaskRepeatType.id!=1 && parentobj.selectedTaskRepeatType.id!=5">
+                           <label class="col-sm-3" for="interval">INTERVAL</label>
+                           <div class="col-sm-9">
+                                 <select ng-options="item as item.label for item in parentobj.periodicInterval track by item.id" ng-model="parentobj.selectedPeriodicInterval" data-ng-show="parentobj.selectedTaskRepeatType.id==2"></select> <span data-ng-show="parentobj.selectedTaskRepeatType.id==2">days after completion</span>
+
+                                 <span data-ng-show="parentobj.selectedTaskRepeatType.id==3 ||parentobj.selectedTaskRepeatType.id==4">every</span>
+                                 <select ng-options="item as item.label for item in parentobj.weeklyInterval track by item.id" ng-model="parentobj.selectedWeeklyInterval" data-ng-show="parentobj.selectedTaskRepeatType.id==3"></select> <span data-ng-show="parentobj.selectedTaskRepeatType.id==3">week on</span> <select ng-options="item as item.label for item in parentobj.weeklyOn track by item.id" ng-model="parentobj.selectedWeeklyOn" data-ng-show="parentobj.selectedTaskRepeatType.id==3"></select>
+
+                                 <select ng-options="item as item.label for item in parentobj.monthlyInterval track by item.id" ng-model="parentobj.selectedMonthlyInterval" data-ng-show="parentobj.selectedTaskRepeatType.id==4"></select> <span data-ng-show="parentobj.selectedTaskRepeatType.id==4">month</span>
+
+                           </div>                           
+                        </div>
+                         <div class="form-group" data-ng-show="parentobj.selectedTaskRepeatType.id==4">
+                           <label class="col-sm-3" for="interval">ON</label>
+                           <div class="col-sm-9">
+                              <select ng-options="item as item.label for item in parentobj.monthlyOn track by item.id" ng-model="parentobj.selectedMonthlyOn" data-ng-show="parentobj.selectedTaskRepeatType.id==4"></select> <span data-ng-show="parentobj.selectedTaskRepeatType.id==4">day of the month</span>
+                           </div>
+                        </div>
+
+                        </div>
+
+                        </div>
                      </div>
                   </div>
                </div>

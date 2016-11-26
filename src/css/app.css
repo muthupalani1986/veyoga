@@ -6976,3 +6976,44 @@ tr.grid-row-non-selected td
 {
   overflow: auto;
 }
+.taskDueDateView-repeatIcon{
+  fill: #49505B;
+    -webkit-flex-shrink: 0;
+    -moz-flex-shrink: 0;
+    flex-shrink: 0;
+    -ms-flex-negative: 0;
+    height: 16px;
+    margin-left: 5px;
+    width: 16px;
+}
+.task-repeat-container{
+    border: 1px solid #dee5e7;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-top:none;
+    position: absolute;
+    z-index: 1000;
+    display: block;
+    top:309px;
+    left: -45px;
+    width: 289px;
+    background: #fff;
+    font-size: 12px;
+    padding-left:10px;
+    padding-right:10px; 
+}
+.RecurrenceView .icon{
+    height: 14px;
+    width: 14px;
+    position: relative;
+    top: 3px;
+}
+
+.duedateTaskRepeat .icon{
+    height: 14px;
+    width: 14px;    
+    top: 3px;
+    position:absolute;
+    right:7px; 
+    top:13px;
+    z-index:999;
+}

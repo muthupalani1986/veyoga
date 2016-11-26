@@ -111,6 +111,88 @@ socket.on('connect', function (data) {
             $scope.dueDate=$scope.currentTask.task.due_on;
         }
         $scope.files="";
+        
+        
+        var selectedRepeatType=$.grep($scope.parentobj.taskRepeatTypes,function(item){
+            if(item.id==$scope.currentTask.task.repeat_type){
+                return true;
+            }else{
+                return false;
+            }
+        });
+        if(selectedRepeatType.length>0){
+            $scope.parentobj.selectedTaskRepeatType=selectedRepeatType[0];   
+        }       
+
+        if($scope.currentTask.task.repeat_type==2){
+            var selectedPeriodicInterval=$.grep($scope.parentobj.periodicInterval,function(item){
+                if(item.id==$scope.currentTask.task.repeat_interval){
+                    return true;
+                }else{
+                    return false;
+                }
+            });
+
+            if(selectedPeriodicInterval.length>0){
+                $scope.parentobj.selectedPeriodicInterval=selectedPeriodicInterval[0];   
+            }
+        }
+
+
+    if($scope.currentTask.task.repeat_type==3){
+        
+            var selectedWeeklyInterval=$.grep($scope.parentobj.weeklyInterval,function(item){
+                if(item.id==$scope.currentTask.task.repeat_interval){
+                    return true;
+                }else{
+                    return false;
+                }
+            });
+            
+            if(selectedWeeklyInterval.length>0){
+                $scope.parentobj.selectedWeeklyInterval=selectedWeeklyInterval[0];   
+            }
+
+            var selectedWeeklyOn=$.grep($scope.parentobj.weeklyInterval,function(item){
+                if(item.id==$scope.currentTask.task.weekly_on){
+                    return true;
+                }else{
+                    return false;
+                }
+            });
+            
+            if(selectedWeeklyOn.length>0){
+                $scope.parentobj.selectedWeeklyOn=selectedWeeklyOn[0];   
+            }
+    }
+
+if($scope.currentTask.task.repeat_type==4){
+
+        var selectedMonthlyInterval=$.grep($scope.parentobj.monthlyInterval,function(item){
+            if(item.id==$scope.currentTask.task.repeat_interval){
+                return true;
+            }else{
+                return false;
+            }
+        });
+        
+        if(selectedMonthlyInterval.length>0){
+            $scope.parentobj.selectedMonthlyInterval=selectedMonthlyInterval[0];   
+        }
+
+        var selectedMonthlyOn=$.grep($scope.parentobj.monthlyOn,function(item){
+            if(item.id==$scope.currentTask.task.monthly_on){
+                return true;
+            }else{
+                return false;
+            }
+        });
+        
+        if(selectedMonthlyOn.length>0){
+            $scope.parentobj.selectedMonthlyOn=selectedMonthlyOn[0];   
+        }
+}
+
         $http.post(domain + 'getConversations', data).then(function(response) {
 
             if(!response.data.success){
@@ -438,8 +520,9 @@ socket.on('connect', function (data) {
                         $scope.assigneeOrgusersBoxStatus=false;                        
                 });
         }
-        
+
         if(!$(e.target).parents().hasClass('moredropdown-actions-icon')){
+            
            $scope.$apply(function() {
             $scope.parentobj.moreActionsMenuStatus=false; 
            });             
@@ -899,5 +982,186 @@ $scope.moreActionMenu=function(){
     $scope.parentobj.moreActionsMenuStatus=!$scope.parentobj.moreActionsMenuStatus;
 }
 
+$scope.openTaskRepeatPanel=function(){
+    $scope.parentobj.moreActionsMenuStatus=false;
+    $scope.parentobj.taskRepeatContainer=true;
+}
+
+$scope.parentobj.taskRepeatTypes = [{
+  id: 0,
+  label: 'Never'
+}, {
+  id: 1,
+  label: 'Daily'
+},
+{
+  id: 2,
+  label: 'Periodically'
+},
+{
+  id: 3,
+  label: 'Weekly'
+},
+{
+  id: 4,
+  label: 'Monthly'
+},
+{
+  id: 5,
+  label: 'Yearly'
+}
+
+];
+
+$scope.parentobj.selectedTaskRepeatType=$scope.parentobj.taskRepeatTypes[0];
+
+$scope.parentobj.periodicInterval=[];
+
+for(var i=1;i<=30;i++){
+    var obj={id:i,label:i};
+    $scope.parentobj.periodicInterval.push(obj);
+}
+
+$scope.parentobj.selectedPeriodicInterval=$scope.parentobj.periodicInterval[6];
+
+$scope.parentobj.weeklyInterval=[];
+
+for(var i=1;i<=12;i++){
+    var obj={id:i,label:i};
+    $scope.parentobj.weeklyInterval.push(obj);
+}
+
+$scope.parentobj.selectedWeeklyInterval=$scope.parentobj.weeklyInterval[0];
+
+$scope.parentobj.monthlyInterval=[];
+
+for(var i=1;i<=12;i++){
+    var obj={id:i,label:i};
+    $scope.parentobj.monthlyInterval.push(obj);
+}
+
+$scope.parentobj.selectedMonthlyInterval=$scope.parentobj.monthlyInterval[0];
+
+$scope.parentobj.monthlyOn=[];
+
+for(var i=1;i<=29;i++){
+    var value=ordinal_suffix_of(i);
+    var obj={id:i,label:value};
+    $scope.parentobj.monthlyOn.push(obj);
+}
+
+$scope.parentobj.selectedMonthlyOn=$scope.parentobj.monthlyOn[0];
+
+$scope.parentobj.weeklyOn=[];
+
+for(var i=0;i<=6;i++){
+    var value=dayShortLeter(i)
+    var obj={id:i,label:value};
+    $scope.parentobj.weeklyOn.push(obj);
+}
+
+
+$scope.parentobj.selectedWeeklyOn=$scope.parentobj.weeklyOn[0];
+
+
+$scope.$watch('opened',function(newValue, oldvalue){
+    if(newValue==false){
+        
+        if($scope.parentobj.showTaskRepeatField){            
+            var repeat_type,repeat_interval,monthly_on,weekly_on;
+            repeat_type=$scope.parentobj.selectedTaskRepeatType.id;
+            $scope.currentTask.task.repeat_type=repeat_type; 
+            if($scope.parentobj.selectedTaskRepeatType.id==0||$scope.parentobj.selectedTaskRepeatType.id==1||$scope.parentobj.selectedTaskRepeatType.id==5){                
+
+                repeat_interval="-1";
+                monthly_on="-1";
+                weekly_on="-1";
+            }
+            if($scope.parentobj.selectedTaskRepeatType.id==2){
+                repeat_interval=$scope.parentobj.selectedPeriodicInterval.id;
+                monthly_on="-1";
+                weekly_on="-1";
+            }
+
+            if($scope.parentobj.selectedTaskRepeatType.id==3){
+                repeat_interval=$scope.parentobj.selectedWeeklyInterval.id;                
+                weekly_on=$scope.parentobj.selectedWeeklyOn.id;
+                $scope.currentTask.task.weekly_on=weekly_on;
+                monthly_on="-1";
+            }
+
+            if($scope.parentobj.selectedTaskRepeatType.id==4){
+                repeat_interval=$scope.parentobj.selectedMonthlyInterval.id; 
+                monthly_on=$scope.parentobj.selectedMonthlyOn.id; 
+                $scope.currentTask.task.monthly_on=monthly_on;              
+                weekly_on="-1";                
+            }
+                var data = $.param({
+                    token: sessionStorage.getItem("token"),
+                    taskID: $scope.currentTask.task.task_id,                    
+                    isUpdateTaskRepeat:true,
+                    repeat_type:repeat_type,
+                    repeat_interval:repeat_interval,
+                    monthly_on:monthly_on,
+                    weekly_on:weekly_on
+                });        
+                
+                   
+                $scope.currentTask.task.repeat_interval=repeat_interval;
+                
+
+                $http.post(domain + 'updateDueDate', data).then(function(response) {
+                    if(!response.data.success){
+                      $state.go('access.signin', {});
+                    }
+
+                },function(){          
+              $state.go('access.signin', {});
+            });
+
+        }   
+             
+        $scope.parentobj.taskRepeatContainer=false;
+        $scope.parentobj.showTaskRepeatField=false;
+    };
+});
+
+function ordinal_suffix_of(i) {
+    var j = i % 10,
+        k = i % 100;
+    if (j == 1 && k != 11) {
+        return i + "st";
+    }
+    if (j == 2 && k != 12) {
+        return i + "nd";
+    }
+    if (j == 3 && k != 13) {
+        return i + "rd";
+    }
+    return i + "th";
+}
+
+function dayShortLeter(i) {
+    if(i==0||i==6){
+        return 'S';
+    }
+    if(i==1){
+        return 'M';
+    }
+    if(i==2||i==4){
+        return 'T';
+    }
+    if(i==3){
+        return 'W';
+    }
+    if(i==5){
+        return 'F';
+    }
+    
+}
+
+$scope.setTaskRepeat=function(){
+    $scope.parentobj.showTaskRepeatField=true;
+}
 
 }]);
