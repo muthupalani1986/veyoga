@@ -1046,6 +1046,10 @@ $scope.parentobj.monthlyOn=[];
 
 for(var i=1;i<=29;i++){
     var value=ordinal_suffix_of(i);
+    if(i==29){
+        value="last";
+    }
+
     var obj={id:i,label:value};
     $scope.parentobj.monthlyOn.push(obj);
 }
@@ -1161,7 +1165,10 @@ function dayShortLeter(i) {
 }
 
 $scope.setTaskRepeat=function(){
-    $scope.parentobj.showTaskRepeatField=true;
+    $scope.parentobj.showTaskRepeatField=true;    
+    if(!$scope.dueDate){
+        $scope.dueDate=moment().toISOString();
+    }
 }
 
 }]);
